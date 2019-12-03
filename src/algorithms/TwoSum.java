@@ -19,7 +19,6 @@ public class TwoSum {
     }
 
 	public static void main(String[] args) {
-		// TODO 自动生成的方法存根
 		int[] arr = {3, 2, 4};
 		twoSum(arr, 6);
 	}

@@ -1,9 +1,0 @@
-/**
- * 
- */
-/**
- * @author lujin
- *
- */
-module Leetcode {
-}
