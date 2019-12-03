@@ -44,7 +44,8 @@ public class MedianOfTwoSortedArrays {
 				}
 			}
 		} else {
-			if (nums1.length == 0 || nums2.length == 0) return nums1.length != 0 ? (double) nums1[(count - 1) / 2] : (double) nums2[(count - 1) / 2];
+			
+            if (nums1.length == 0 || nums2.length == 0) return nums1.length != 0 ? (double) nums1[(count - 1) / 2] : (double) nums2[(count - 1) / 2];
 			
 			for (int k = 0; k < (count + 1) / 2; k++) {
 				result = nums1[i] < nums2[j] ? nums1[i] : nums2[j];
