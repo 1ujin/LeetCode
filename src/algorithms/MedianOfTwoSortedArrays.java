@@ -8,60 +8,69 @@ public class MedianOfTwoSortedArrays {
         int count = nums1.length + nums2.length, i = 0, j = 0;
 		double result = 0, tmp = 0;
 		
-		if (count % 2 == 0) {
-			int[] nums3, nums4;
-			
-			if (nums1.length > nums2.length) {
-				nums3 = Arrays.copyOf(nums1, (nums1.length + nums2.length) / 2);
-				nums4 = Arrays.copyOf(nums2, (nums1.length + nums2.length) / 2);
-				System.arraycopy(nums1, (nums1.length + nums2.length) / 2, nums4, nums2.length, (nums1.length - nums2.length) / 2);
+		if (nums1.length == 0) {
+			if (nums2.length % 2 == 0) {
+				return (nums2[nums2.length / 2 - 1] + nums2[nums2.length / 2]) / 2.0;
 			} else {
-				nums3 = Arrays.copyOf(nums1, (nums1.length + nums2.length) / 2);
-				nums4 = Arrays.copyOf(nums2, (nums1.length + nums2.length) / 2);
-				System.arraycopy(nums2, (nums1.length + nums2.length) / 2, nums3, nums1.length, (nums2.length - nums1.length) / 2);
-			}
-			
-			if (nums3.length == 0 || nums4.length == 0) return nums3.length != 0 ? ((double) nums3[count / 2 - 1] + (double) nums3[count / 2]) / 2 : ((double) nums4[count / 2 - 1] + (double) nums4[count / 2]) / 2;
-			
-			for (int k = 0; k <= count / 2; k++) {
-				
-				if (i == nums3.length - 1 && j == nums4.length - 1) {
-					result = ((double) nums3[j] + (double) nums4[j]) / 2;
-				} else if (i == nums3.length - 1) {
-					result = (tmp + (double) nums4[j]) / 2;
-				} else if (j == nums4.length - 1) {
-					result = (tmp + (double) nums3[i]) / 2;
-				} else {
-					result = (tmp + (nums3[i] < nums4[j] ? (double) nums3[i] : (double) nums4[j])) / 2;
-				}
-				
-				if (nums3[i] < nums4[j]) {
-					tmp = nums3[i];
-					if (i < nums3.length - 1) i++;
-				} else {
-					tmp = nums4[j];
-					if (j < nums4.length - 1) j++;
-				}
-			}
-		} else {
-			
-            if (nums1.length == 0 || nums2.length == 0) return nums1.length != 0 ? (double) nums1[(count - 1) / 2] : (double) nums2[(count - 1) / 2];
-			
-			for (int k = 0; k < (count + 1) / 2; k++) {
-				result = nums1[i] < nums2[j] ? nums1[i] : nums2[j];
-				if (nums1[i] < nums2[j]) {
-					if (i < nums1.length - 1) i++;
-				} else {
-					if (j < nums2.length - 1) j++;
-				}
+				return nums2[nums2.length / 2];
 			}
 		}
-        return (double) result;
+		
+		if (nums2.length == 0) {
+			if (nums1.length % 2 == 0) {
+				return (nums1[nums1.length / 2 - 1] + nums1[nums1.length / 2]) / 2.0;
+			} else {
+				return nums1[nums1.length / 2];
+			}
+		}
+		
+		if (count % 2 == 0) count++;
+		
+		for (int k = 0; k < (count + 1) / 2; k++) {
+			tmp = result;
+			if (i == nums1.length) {
+	            while (i + j != (count + 1) / 2) {
+	                if (result < nums2[j]) {
+	                	tmp = result;
+						result = (double) nums2[j];
+					}
+	                j++;
+	            }
+	            break;
+	        }
+			
+	        if (j == nums2.length) {
+	            while (i + j != (count + 1) / 2) {
+	            	if (result < nums1[i]) {
+	            		tmp = result;
+						result = (double) nums1[i];
+					}
+	            	i++;
+	            }
+	            break;
+	        }
+	        
+	        if (nums1[i] < nums2[j]) {
+	            result = nums1[i];
+	            i++;
+	        } else {
+	            result = nums2[j];
+	            j++;
+	        }
+
+		}
+		
+		if ((nums1.length + nums2.length) % 2 == 0) {
+			System.out.println(tmp);
+			System.out.println(result);
+			return (tmp + result) / 2;
+		}
+		return result;
     }
 
 	public static void main(String[] args) {
-		int[] nums1 = new int[] {1, 2, 4};
-		int[] nums2 = new int[] {-1, 3};
+		int[] nums1 = new int[] {1};
+		int[] nums2 = new int[] {2, 3, 4};
 		System.out.println(findMedianSortedArrays(nums1, nums2));
 	}
 
