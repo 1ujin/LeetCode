@@ -1,5 +1,7 @@
 package algorithms;
 
+import sun.java2d.cmm.kcms.KcmsServiceProvider;
+
 public class MedianOfTwoSortedArrays {
 	
 	// method 1
@@ -100,6 +102,7 @@ public class MedianOfTwoSortedArrays {
 	public static int getKth(int[] nums1, int start1, int end1, int[] nums2, int start2, int end2, int k) {
 		int len1 = end1 - start1 + 1, len2 = end2 - start2 + 1;
 		
+		// 让 len1 的长度小于 len2，这样就能保证如果有数组空了，一定是 len1
 		if (len1 > len2) {
 			return getKth(nums2, start2, end2, nums1, start1, end1, k);
 		}
@@ -155,11 +158,37 @@ public class MedianOfTwoSortedArrays {
         }
         return 0.0;
 	}
+	
+	// method 5
+	public static double findMedianSortedArrays5(int[] nums1, int[] nums2) {
+		int m = nums1.length, n = nums2.length;
+		return (getNumberK(nums1, nums2, (m + n + 1) / 2) + getNumberK(nums1, nums2, (m + n + 2) / 2)) / 2.0;
+	}
+	
+	public static double getNumberK(int[] nums1, int[] nums2, int k) {
+		int m = nums1.length, n = nums2.length, start1 = 0, start2 = 0;
+		while (true) {
+			if (start1 >= m) return nums2[start2 + k - 1];
+			else if (start2 >= n) return nums1[start1 + k -1];
+			
+			if (k == 1) return Math.min(nums1[start1], nums2[start2]);
+			
+			int i = start1 + Math.min(m, k / 2) - 1, j = start2 + Math.min(n, k / 2) - 1;
+			
+			if (nums1[i] > nums2[j]) {
+				k -= (j + start2 + 1);
+				start2 = j + 1;
+			} else {
+				k -= (i + start1 + 1);
+				start1 = i + 1;
+			}
+		}
+	}
 
 	public static void main(String[] args) {
-		int[] nums1 = new int[] {1};
-		int[] nums2 = new int[] {2, 3, 4};
-		System.out.println(findMedianSortedArrays4(nums1, nums2));
+		int[] nums1 = new int[] {};
+		int[] nums2 = new int[] {1, 2, 3, 4};
+		System.out.println(findMedianSortedArrays5(nums1, nums2));
 	}
 
 }
