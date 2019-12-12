@@ -218,7 +218,10 @@ public class LongestPalindromicSubstring {
 	}
 
     public static void main(String[] args) {
+    	long startTime = System.nanoTime();
         System.out.println(longestPalindrome6("babab"));
+        long endTime = System.nanoTime();
+        System.out.println("Duration: " + (endTime - startTime) + "ns");
     }
 
 }

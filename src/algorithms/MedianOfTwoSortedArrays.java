@@ -1,7 +1,5 @@
 package algorithms;
 
-import sun.java2d.cmm.kcms.KcmsServiceProvider;
-
 public class MedianOfTwoSortedArrays {
 	
 	// method 1
