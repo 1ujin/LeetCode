@@ -189,7 +189,7 @@ public class LongestPalindromicSubstring {
         return longestPalindromeStr;
     }
     
-    // method 6 recursion 超出时间限制
+    // method 6 recursion 超出时间限制本地运行正常
     public static String longestPalindrome6(String s) {
     	if (s == null || s.length() == 0) return "";
     	int[] result = new int[2];
