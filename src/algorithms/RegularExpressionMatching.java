@@ -70,7 +70,20 @@ public class RegularExpressionMatching {
 
     public static boolean isMatch2(String text, String pattern) {
         memo = new Result[text.length() + 1][pattern.length() + 1];
-        return dp(0, 0, text, pattern);
+        boolean ret = dp(0, 0, text, pattern);
+        // 打印动态规划表
+        for (int j = -1; j < text.length() + 1; j++) {
+			System.out.printf("%-10s", j);
+		}
+        System.out.println();
+        for (int i = 0; i < pattern.length() + 1; i++) {
+        	System.out.printf("%-10d", i);
+			for (int j = 0; j < text.length() + 1; j++) {
+				System.out.printf("%-10s", memo[j][i]);
+			}
+			System.out.println();
+		}
+        return ret;
     }
 
     public static boolean dp(int i, int j, String text, String pattern) {
@@ -78,18 +91,18 @@ public class RegularExpressionMatching {
             return memo[i][j] == Result.TRUE;
         }
         boolean ans;
-        if (j == pattern.length()){
+        if (j == pattern.length()) {
             ans = i == text.length();
         } else{
             boolean first_match = (i < text.length() &&
                                    (pattern.charAt(j) == text.charAt(i) ||
                                     pattern.charAt(j) == '.'));
 
-            if (j + 1 < pattern.length() && pattern.charAt(j+1) == '*'){
-                ans = (dp(i, j+2, text, pattern) ||
-                       first_match && dp(i+1, j, text, pattern));
+            if (j + 1 < pattern.length() && pattern.charAt(j + 1) == '*') {
+                ans = (dp(i, j + 2, text, pattern) ||
+                       first_match && dp(i + 1, j, text, pattern));
             } else {
-                ans = first_match && dp(i+1, j+1, text, pattern);
+                ans = first_match && dp(i + 1, j + 1, text, pattern);
             }
         }
         memo[i][j] = ans ? Result.TRUE : Result.FALSE;
@@ -101,26 +114,41 @@ public class RegularExpressionMatching {
         boolean[][] dp = new boolean[text.length() + 1][pattern.length() + 1];
         dp[text.length()][pattern.length()] = true;
 
-        for (int i = text.length(); i >= 0; i--){
-            for (int j = pattern.length() - 1; j >= 0; j--){
+        for (int i = text.length(); i >= 0; i--) {
+            for (int j = pattern.length() - 1; j >= 0; j--) {
+            	// text的最后一位开始参与匹配，且text的第i个字符是否和pattern的第j个字符相同
                 boolean first_match = (i < text.length() &&
                                        (pattern.charAt(j) == text.charAt(i) ||
                                         pattern.charAt(j) == '.'));
-                if (j + 1 < pattern.length() && pattern.charAt(j+1) == '*'){
-                    dp[i][j] = dp[i][j+2] || first_match && dp[i+1][j];
-                } else {
-                    dp[i][j] = first_match && dp[i+1][j+1];
+                if (j + 1 < pattern.length() && pattern.charAt(j + 1) == '*') { // 第j个字符不为最后字符且之后的字符为*
+                	// 此时的情况等同于：pattern向后移动两位的情况，或者在是否匹配的同时text向后移动一位的情况
+                    dp[i][j] = dp[i][j + 2] || first_match && dp[i + 1][j];
+                } else { // 第j个字符为最后字符或者之后不为*
+                	// 此时的情况等同于：在是否匹配的同时text和pattern均向后移动一位的情况
+                    dp[i][j] = first_match && dp[i + 1][j + 1];
                 }
             }
         }
+        // 打印动态规划表
+        for (int j = -1; j < text.length() + 1; j++) {
+			System.out.printf("%-10s", j);
+		}
+        System.out.println();
+        for (int i = 0; i < pattern.length() + 1; i++) {
+        	System.out.printf("%-10d", i);
+			for (int j = 0; j < text.length() + 1; j++) {
+				System.out.printf("%-10s", dp[j][i]);
+			}
+			System.out.println();
+		}
         return dp[0][0];
     }
     
     public static void main(String[] args) {
         long startTime = System.nanoTime();
-        isMatch2("a", "a*a");
+        isMatch3("aaa", "a*a");
         long endTime = System.nanoTime();
-        System.out.println("Duration: " + (endTime - startTime) + "ns");
+        System.out.print("Duration: " + (endTime - startTime) + "ns");
 
     }
 
