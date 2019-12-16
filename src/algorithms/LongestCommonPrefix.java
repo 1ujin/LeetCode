@@ -1,7 +1,5 @@
 package algorithms;
 
-import java.util.Iterator;
-
 public class LongestCommonPrefix {
     
     // method 1
