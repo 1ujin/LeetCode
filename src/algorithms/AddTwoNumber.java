@@ -1,12 +1,12 @@
 package algorithms;
 
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) { val = x; }
-}
-
 public class AddTwoNumber {
+	
+	static class ListNode {
+		int val;
+		ListNode next;
+		ListNode(int x) { val = x; }
+	}
     
     public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         ListNode tmp = new ListNode(0), l3;
