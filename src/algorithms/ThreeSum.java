@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ThreeSum {
     
-    // method 1 ³¬³öÊ±¼äÏŞÖÆ
+    // method 1 æœ¬åœ°è¿è¡Œæ­£å¸¸ï¼Œçº¿ä¸Šæäº¤è¿è¡Œè¶…æ—¶
     public static List<List<Integer>> threeSum1(int[] nums) {
         List<List<Integer>> list = new ArrayList<>();
         int l = 0;
@@ -67,8 +67,8 @@ public class ThreeSum {
                     while (l < r && nums[r] == nums[r - 1]) r--;
                     r--;
                 } else if (nums[i] + nums[l] + nums[r] < 0) {
-                	while (l < r && nums[l] == nums[l + 1]) l++;
-                	l++;
+                    while (l < r && nums[l] == nums[l + 1]) l++;
+                    l++;
                 } else {
                     while (l < r && nums[r] == nums[r - 1]) r--;
                     r--;
@@ -81,33 +81,33 @@ public class ThreeSum {
     
     // method 3
     public static List<List<Integer>> threeSum3(int[] nums) {
-    	List<List<Integer>> result = new ArrayList<>();
+        List<List<Integer>> result = new ArrayList<>();
         if (nums == null || nums.length < 3) return result;
         Arrays.sort(nums);
         int i = 0, l = 1, r = nums.length - 1;
         while (i < nums.length - 2 && nums[i] <= 0) {
-        	if (nums[i] + nums[l] + nums[r] == 0) {
+            if (nums[i] + nums[l] + nums[r] == 0) {
                 result.add(Arrays.asList(nums[i], nums[l], nums[r]));
                 while (l < r && nums[l] == nums[l + 1]) l++;
                 l++;
                 while (l < r && nums[r] == nums[r - 1]) r--;
                 r--;
             } else if (nums[i] + nums[l] + nums[r] < 0) {
-            	while (l < r && nums[l] == nums[l + 1]) l++;
-            	l++;
+                while (l < r && nums[l] == nums[l + 1]) l++;
+                l++;
             } else {
                 while (l < r && nums[r] == nums[r - 1]) r--;
                 r--;
             }
-        	if (l >= r) {
-				while (i < nums.length - 3 && nums[i] == nums[i + 1]) i++;
-				i++;
-				l = i + 1;
-				r = nums.length - 1;
-			}
+            if (l >= r) {
+                while (i < nums.length - 3 && nums[i] == nums[i + 1]) i++;
+                i++;
+                l = i + 1;
+                r = nums.length - 1;
+            }
         }
         return result;
-	}
+    }
 
     public static void main(String[] args) {
         long startTime = System.nanoTime();
