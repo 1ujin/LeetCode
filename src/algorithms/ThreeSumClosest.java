@@ -46,52 +46,52 @@ public class ThreeSumClosest {
         int result = nums[0] + nums[1] + nums[2];
         
         for (int i = 0; i < nums.length - 2; i++) {
-        	
+            
             int left = i + 1, right = nums.length - 1;
             
             while (left != right) {
-            	// Ñ¡³ö¸ü½Ó½ütargetµÄ±ß½çÖµ×÷Îªresult¿ÉÒÔ¼õĞ¡Ê±¼ä¸´ÔÓ¶È
-	            // (2)ÅĞ¶Ï×îĞ¡Öµ
-	            int min = nums[i] + nums[left] + nums[left + 1];
-	            
-	            if (target < min) {
-	            	
-	                if (Math.abs(result - target) > Math.abs(min - target)) result = min;
-	                
-	                break;
-	                
-	            }
-	            // (2)ÅĞ¶Ï×î´óÖµ
-	            int max = nums[i] + nums[right] + nums[right - 1];
-	            
-	            if (target > max) {
-	            	
-	                if (Math.abs(result - target) > Math.abs(max - target)) result = max;
-	                
-	                break;
-	                
-	            }
-	            int sum = nums[i] + nums[left] + nums[right];
-	            // (3)ÅĞ¶ÏÈıÊıÖ®ºÍÊÇ·ñµÈÓÚtarget
-	            if (sum == target) return sum;
-	            // ±È½ÏÈıÊıÖ®ºÍsumÓë×î´óÖµmax×îĞ¡ÖµminË­¸ü½Ó½ütarget²¢±£´æµ½result
-	            if (Math.abs(sum - target) < Math.abs(result - target)) result = sum;
+                // é€‰å‡ºæ›´æ¥è¿‘targetçš„è¾¹ç•Œå€¼ä½œä¸ºresultå¯ä»¥å‡å°æ—¶é—´å¤æ‚åº¦
+                // (2)åˆ¤æ–­æœ€å°å€¼
+                int min = nums[i] + nums[left] + nums[left + 1];
+                
+                if (target < min) {
+                    
+                    if (Math.abs(result - target) > Math.abs(min - target)) result = min;
+                    
+                    break;
+                    
+                }
+                // (2)åˆ¤æ–­æœ€å¤§å€¼Öµ
+                int max = nums[i] + nums[right] + nums[right - 1];
+                
+                if (target > max) {
+                    
+                    if (Math.abs(result - target) > Math.abs(max - target)) result = max;
+                    
+                    break;
+                    
+                }
+                int sum = nums[i] + nums[left] + nums[right];
+                // (3)åˆ¤æ–­ä¸‰æ•°ä¹‹å’Œæ˜¯å¦ç­‰äºtarget
+                if (sum == target) return sum;
+                // æ¯”è¾ƒä¸‰æ•°ä¹‹å’Œsumä¸æœ€å¤§å€¼maxæœ€å°å€¼minè°æ›´æ¥è¿‘targetå¹¶ä¿å­˜åˆ°result
+                if (Math.abs(sum - target) < Math.abs(result - target)) result = sum;
 
-	            if (sum > target) {
-	            	
-	                right--;
-	                // (1)½â¾önums[right]ÖØ¸´
-	                while (left != right && nums[right] == nums[right + 1]) right--;
+                if (sum > target) {
+                    
+                    right--;
+                    // (1)è§£å†³nums[right]é‡å¤
+                    while (left != right && nums[right] == nums[right + 1]) right--;
 
-	            } else {
-	            	
-	                left++;
-	                // (1)½â¾önums[left]ÖØ¸´
-	                while (left != right && nums[left] == nums[left - 1]) left++;
-	                
-	            }
+                } else {
+                    
+                    left++;
+                    // (1)è§£å†³nums[left]é‡å¤
+                    while (left != right && nums[left] == nums[left - 1]) left++;
+                    
+                }
             }
-            // (1)½â¾önums[i]ÖØ¸´
+            // (1)è§£å†³nums[i]é‡å¤
             while (i < nums.length - 2 && nums[i] == nums[i + 1]) i++;
 
         }
@@ -101,13 +101,13 @@ public class ThreeSumClosest {
     public static void main(String[] args) {
         long startTime = System.nanoTime();
         System.out.println(threeSumClosest1(new int[] {
-        		6,-18,-20,-7,-15,9,18,10,1,-20,-17,-19,-3,-5,-19,10,6,-11,1,-17,-15,6,17,-18,-3,16,19,-20,-3,-17,-15,-3,
-        		12,1,-9,4,1,12,-2,14,4,-4,19,-20,6,0,-19,18,14,1,-15,-5,14,12,-4,0,-10,6,6,-6,20,-8,-6,5,0,3,10,7,-2,17,
-        		20,12,19,-13,-1,10,-1,14,0,7,-3,10,14,14,11,0,-4,-15,-8,3,2,-5,9,10,16,-4,-3,-9,-8,-14,10,6,2,-12,-7,
-        		-16,-6,10
-        		}, -52));
-//        		1, 1, 1, 1
-//        		}, 0));
+                6,-18,-20,-7,-15,9,18,10,1,-20,-17,-19,-3,-5,-19,10,6,-11,1,-17,-15,6,17,-18,-3,16,19,-20,-3,-17,-15,-3,
+                12,1,-9,4,1,12,-2,14,4,-4,19,-20,6,0,-19,18,14,1,-15,-5,14,12,-4,0,-10,6,6,-6,20,-8,-6,5,0,3,10,7,-2,17,
+                20,12,19,-13,-1,10,-1,14,0,7,-3,10,14,14,11,0,-4,-15,-8,3,2,-5,9,10,16,-4,-3,-9,-8,-14,10,6,2,-12,-7,
+                -16,-6,10
+                }, -52));
+//                1, 1, 1, 1
+//                }, 0));
         long endTime = System.nanoTime();
         System.out.print("Duration: " + (endTime - startTime) + "ns");
 
