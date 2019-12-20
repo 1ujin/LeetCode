@@ -1,14 +1,9 @@
 package algorithms;
 
 import algorithms.MergeTwoSortedLists;
+import algorithms.MergeTwoSortedLists.ListNode;
 
 public class MergeKSortedLists {
-    
-    static class ListNode {
-        int val;
-        ListNode next;
-        ListNode(int x) { val = x; }
-    }
     
     // method 1 recursion slowest
     public static ListNode mergeKLists1(ListNode[] lists) {
@@ -42,6 +37,7 @@ public class MergeKSortedLists {
             }
             len = (len + 1) / 2;
         }
+        return lists[0];
     }
 
     public static void main(String[] args) {
