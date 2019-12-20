@@ -32,8 +32,8 @@ public class MergeKSortedLists {
         if (lists == null || lists.length == 0) return null;
         int len = lists.length;
         while (len > 1) {
-            for (int i = 0; i < lists.length / 2; i++) {
-                lists[i] = MergeTwoSortedLists.mergeTwoLists2(lists[i], lists[len - 1 - i]);
+            for (int i = 0; i < len / 2; i++) {
+                lists[i] = MergeTwoSortedLists.mergeTwoLists1(lists[i], lists[len - 1 - i]);
             }
             len = (len + 1) / 2;
         }
