@@ -36,7 +36,7 @@ public class MergeTwoSortedLists {
     }
     
     // method 2 recursion
-    public ListNode mergeTwoLists2(ListNode l1, ListNode l2) {
+    public static ListNode mergeTwoLists2(ListNode l1, ListNode l2) {
         if(l1 == null) return l2;
         if(l2 == null) return l1;
         if(l1.val < l2.val) {
@@ -58,7 +58,7 @@ public class MergeTwoSortedLists {
         l2.next.next = new ListNode(4);
         
         long startTime = System.nanoTime();
-        ListNode l = mergeTwoLists1(l1, l2);
+        ListNode l = mergeTwoLists2(l1, l2);
         long endTime = System.nanoTime();
         while (l.next != null) {
             System.out.printf("%d->", l.val);
