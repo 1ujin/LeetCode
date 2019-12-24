@@ -9,6 +9,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 // method 1 volatile 自旋锁
 class FooBarByVolatile {
@@ -196,10 +198,55 @@ class FooBarByBlockingQueue {
     }
 }
 
+// method 6 lock
+class FooBarByLock {
+    private int n;
+    private boolean firstFoo = false;
+    private ReentrantLock lock = new ReentrantLock();
+    private Condition fooCondition = lock.newCondition();
+    private Condition barCondition = lock.newCondition();
+
+    public FooBarByLock(int n) {
+        this.n = n;
+    }
+
+    public void foo(Runnable printFoo) throws InterruptedException {
+        lock.lock();
+        try {
+            for (int i = 0; i < n; i++) {
+                // printFoo.run() outputs "foo". Do not change or remove this line.
+                printFoo.run();
+                if (!firstFoo) firstFoo = true;
+                barCondition.signal();
+                fooCondition.await();
+            }
+            barCondition.signal();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public void bar(Runnable printBar) throws InterruptedException {
+        lock.lock();
+        try {
+            while (!firstFoo) barCondition.await();
+            for (int i = 0; i < n; i++) {
+                // printBar.run() outputs "bar". Do not change or remove this line.
+                printBar.run();
+                fooCondition.signal();
+                barCondition.await();
+            }
+            fooCondition.signal();
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+
 public class PrintFoobarAlternately {
     
     public static void main(String[] args) {
-        FooBarByBlockingQueue fb = new FooBarByBlockingQueue(20);
+        FooBarByLock fb = new FooBarByLock(20);
         Random random = new Random(31);
         ExecutorService exec = Executors.newFixedThreadPool(2);
         Runnable r1 = () -> {
