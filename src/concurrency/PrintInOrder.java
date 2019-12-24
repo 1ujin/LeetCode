@@ -6,6 +6,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 // method 1 count down latch
 class FooByCountDownLatch {
@@ -149,11 +151,64 @@ class FooBySemaphore {
 
 }
 
+// method 6 lock
+class FooByLock {
+    
+    private int flag = 1;
+    private ReentrantLock lock = new ReentrantLock();
+    private Condition secondCondition = lock.newCondition();
+    private Condition thirdCondition = lock.newCondition();
+
+    public FooByLock() {
+        
+    }
+
+    public void first(Runnable printFirst) throws InterruptedException {
+        lock.lock();
+        try {
+            // printFirst.run() outputs "first". Do not change or remove this line.
+            printFirst.run();
+            flag++;
+            secondCondition.signal();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public void second(Runnable printSecond) throws InterruptedException {
+        lock.lock();
+        try {
+            while (flag != 2) {
+                secondCondition.await();
+            }
+            // printSecond.run() outputs "second". Do not change or remove this line.
+            printSecond.run();
+            flag++;
+            thirdCondition.signal();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public void third(Runnable printThird) throws InterruptedException {
+        lock.lock();
+        try {
+            while (flag != 3) {
+                thirdCondition.await();
+            }
+            // printThird.run() outputs "third". Do not change or remove this line.
+            printThird.run();
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+
 public class PrintInOrder {
 
     public static void main(String[] args) {
         ExecutorService exec = Executors.newCachedThreadPool();
-        FooBySemaphore foo = new FooBySemaphore();
+        FooByLock foo = new FooByLock();
         // 三种不同的方式建立线程，推荐实现Runnable接口
         Runnable t1 = new Runnable() {
             public void run() {
