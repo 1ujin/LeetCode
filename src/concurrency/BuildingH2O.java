@@ -50,8 +50,6 @@ class H2OBySemaphore {
     
     private Semaphore hSemaphore = new Semaphore(2);
     private Semaphore oSemaphore = new Semaphore(1);
-    private Semaphore hIonSemaphore = new Semaphore(0);
-    private Semaphore oIonSemaphore = new Semaphore(0);
     
     public H2OBySemaphore() {
         
@@ -59,27 +57,23 @@ class H2OBySemaphore {
 
     public void hydrogen(Runnable releaseHydrogen) throws InterruptedException {
         hSemaphore.acquire();
-        hIonSemaphore.release();
-        oIonSemaphore.acquire();
-        hSemaphore.release();
         // releaseHydrogen.run() outputs "H". Do not change or remove this line.
         releaseHydrogen.run();
+        oSemaphore.release();
     }
 
     public void oxygen(Runnable releaseOxygen) throws InterruptedException {
-        oSemaphore.acquire();
-        oIonSemaphore.release(2);
-        hIonSemaphore.acquire(2);
-        oSemaphore.release();
+        oSemaphore.acquire(2);
         // releaseOxygen.run() outputs "O". Do not change or remove this line.
         releaseOxygen.run();
+        hSemaphore.release(2);
     }
 }
 
 public class BuildingH2O {
 
     public static void main(String[] args) {
-        String str = "OOHHHH";
+        String str = "OOOOOHOHHH";
         Random random = new Random(31);
         H2OBySemaphore h2o = new H2OBySemaphore();
         ExecutorService exec = Executors.newFixedThreadPool(2);
