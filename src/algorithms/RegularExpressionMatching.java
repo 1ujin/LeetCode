@@ -5,7 +5,7 @@ import java.util.List;
 
 public class RegularExpressionMatching {
     
-    // error method * Æ¥ÅäÇ°±ßËùÓĞÔªËØ
+    // error method * åŒ¹é…å‰è¾¹æ‰€æœ‰å…ƒç´ 
     public static boolean isMatch(String s, String p) {
         if (p.isEmpty()) return s.isEmpty();
         char[] pChars = p.toCharArray();
@@ -48,17 +48,17 @@ public class RegularExpressionMatching {
     public static boolean isMatch1(String s, String p) {
         if (p.isEmpty()) return s.isEmpty();
         if (s.isEmpty()) {
-            if (p.length() > 1 && p.charAt(1) == '*') return isMatch1(s, p.substring(2)); // ¿Õ ÓĞ*
-            else return false; // ¿Õ ÎŞ*
+            if (p.length() > 1 && p.charAt(1) == '*') return isMatch1(s, p.substring(2)); // ç©º æœ‰*
+            else return false; // ç©º æ— *
         }
         if (s.charAt(0) == p.charAt(0) || p.charAt(0) == '.') {
             if (p.length() > 1 && p.charAt(1) == '*') {
-                return (isMatch1(s.substring(1), p) || isMatch1(s, p.substring(2))); // Æ¥Åä ÓĞ*
+                return (isMatch1(s.substring(1), p) || isMatch1(s, p.substring(2))); // åŒ¹é… æœ‰*
             }
-            return isMatch1(s.substring(1), p.substring(1)); // Æ¥Åä ÎŞ*
+            return isMatch1(s.substring(1), p.substring(1)); // åŒ¹é… æ— *
         } else if (p.length() > 1 && p.charAt(1) == '*') {
-            return isMatch1(s, p.substring(2)); // ²»Æ¥Åä ÓĞ*
-        } else return false; // ²»Æ¥Åä ÎŞ*
+            return isMatch1(s, p.substring(2)); // ä¸åŒ¹é… æœ‰*
+        } else return false; // ä¸åŒ¹é… æ— *
     }
 
     // method 2 dynamic programming top-down fastest
@@ -71,7 +71,7 @@ public class RegularExpressionMatching {
     public static boolean isMatch2(String text, String pattern) {
         memo = new Result[text.length() + 1][pattern.length() + 1];
         boolean ret = dp(0, 0, text, pattern);
-        // ´òÓ¡¶¯Ì¬¹æ»®±í
+        // æ‰“å°åŠ¨æ€è§„åˆ’è¡¨
         for (int j = -1; j < text.length() + 1; j++) {
 			System.out.printf("%-10s", j);
 		}
@@ -116,20 +116,20 @@ public class RegularExpressionMatching {
 
         for (int i = text.length(); i >= 0; i--) {
             for (int j = pattern.length() - 1; j >= 0; j--) {
-            	// textµÄ×îºóÒ»Î»¿ªÊ¼²ÎÓëÆ¥Åä£¬ÇÒtextµÄµÚi¸ö×Ö·ûÊÇ·ñºÍpatternµÄµÚj¸ö×Ö·ûÏàÍ¬
+            	// textçš„æœ€åä¸€ä½å¼€å§‹å‚ä¸åŒ¹é…ï¼Œä¸”textçš„ç¬¬iä¸ªå­—ç¬¦æ˜¯å¦å’Œpatternçš„ç¬¬jä¸ªå­—ç¬¦ç›¸åŒ
                 boolean first_match = (i < text.length() &&
                                        (pattern.charAt(j) == text.charAt(i) ||
                                         pattern.charAt(j) == '.'));
-                if (j + 1 < pattern.length() && pattern.charAt(j + 1) == '*') { // µÚj¸ö×Ö·û²»Îª×îºó×Ö·ûÇÒÖ®ºóµÄ×Ö·ûÎª*
-                	// ´ËÊ±µÄÇé¿öµÈÍ¬ÓÚ£ºpatternÏòºóÒÆ¶¯Á½Î»µÄÇé¿ö£¬»òÕßÔÚÊÇ·ñÆ¥ÅäµÄÍ¬Ê±textÏòºóÒÆ¶¯Ò»Î»µÄÇé¿ö
+                if (j + 1 < pattern.length() && pattern.charAt(j + 1) == '*') { // ç¬¬jä¸ªå­—ç¬¦ä¸ä¸ºæœ€åå­—ç¬¦ä¸”ä¹‹åçš„å­—ç¬¦ä¸º*
+                	// æ­¤æ—¶çš„æƒ…å†µç­‰åŒäºï¼špatternå‘åç§»åŠ¨ä¸¤ä½çš„æƒ…å†µï¼Œæˆ–è€…åœ¨æ˜¯å¦åŒ¹é…çš„åŒæ—¶textå‘åç§»åŠ¨ä¸€ä½çš„æƒ…å†µ
                     dp[i][j] = dp[i][j + 2] || first_match && dp[i + 1][j];
-                } else { // µÚj¸ö×Ö·ûÎª×îºó×Ö·û»òÕßÖ®ºó²»Îª*
-                	// ´ËÊ±µÄÇé¿öµÈÍ¬ÓÚ£ºÔÚÊÇ·ñÆ¥ÅäµÄÍ¬Ê±textºÍpattern¾ùÏòºóÒÆ¶¯Ò»Î»µÄÇé¿ö
+                } else { // ç¬¬jä¸ªå­—ç¬¦ä¸ºæœ€åå­—ç¬¦æˆ–è€…ä¹‹åä¸ä¸º*
+                	// æ­¤æ—¶çš„æƒ…å†µç­‰åŒäºï¼šåœ¨æ˜¯å¦åŒ¹é…çš„åŒæ—¶textå’Œpatternå‡å‘åç§»åŠ¨ä¸€ä½çš„æƒ…å†µ
                     dp[i][j] = first_match && dp[i + 1][j + 1];
                 }
             }
         }
-        // ´òÓ¡¶¯Ì¬¹æ»®±í
+        // æ‰“å°åŠ¨æ€è§„åˆ’è¡¨
         for (int j = -1; j < text.length() + 1; j++) {
 			System.out.printf("%-10s", j);
 		}
