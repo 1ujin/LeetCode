@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class SubstringWithConcatenationOfAllWords {
     
-    // method 1 slow
+    // method 1
     public static List<Integer> findSubstring(String s, String[] words) {
         List<Integer> list = new ArrayList<>();
         int wordNum = words.length;
@@ -25,10 +25,7 @@ public class SubstringWithConcatenationOfAllWords {
             for (int j = 0; j <= substr.length() - wordLen; j += wordLen) {
                 String subSubstr = substr.substring(j, j + wordLen);
                 substrMap.put(subSubstr, substrMap.getOrDefault(subSubstr, 0) + 1);
-            }
-            // 两个循环可以合并优化
-            for (Map.Entry<String, Integer> entry : substrMap.entrySet()) {
-                if (!wordMap.containsKey(entry.getKey()) || entry.getValue() != wordMap.get(entry.getKey())) {
+                if (!wordMap.containsKey(subSubstr) || substrMap.get(subSubstr) > wordMap.get(subSubstr)) {
                     continue loop;
                 }
             }
