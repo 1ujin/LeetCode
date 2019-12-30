@@ -4,7 +4,6 @@ public class SearchInRotatedSortedArray {
     
     public static int search(int[] nums, int target) {
         if (nums.length == 0) return -1;
-        if (nums.length == 1) return target == nums[0] ? 0 : -1;
         int i = 0, flag = 1;
         if (target < nums[i]) {
             i = nums.length - 1;
