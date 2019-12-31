@@ -26,22 +26,28 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
     public static int[] searchRange2(int[] nums, int target) {
         int[] positions = new int[] {-1, -1};
         int left = 0, right = nums.length;
+        // 查找第一个位置
         while (left < right) {
             int mid = (left + right) / 2;
+            // 使左侧区间的数全部小于目标值，分界处即所有目标数的左边界
             if (nums[mid] >= target) {
                 right = mid;
             } else {
                 left = mid + 1;
             }
         }
+        System.out.println(left);
+        // 检查位置是否在数组中，是否到达第一个位置且等于目标值
         if (left == nums.length || nums[left] != target) {
             return positions;
         }
         positions[0] = left;
         left = 0;
         right = nums.length;
+        // 查找最后一个位置
         while (left < right) {
             int mid = (left + right) / 2;
+            // 使左侧区间的数全部大于目标值，分界处即所有目标数的右边界
             if (nums[mid] > target) {
                 right = mid;
             } else {
