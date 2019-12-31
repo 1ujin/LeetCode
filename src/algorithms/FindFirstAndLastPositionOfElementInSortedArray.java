@@ -25,6 +25,30 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
     // method 2 binary search
     public static int[] searchRange2(int[] nums, int target) {
         int[] positions = new int[] {-1, -1};
+        int left = 0, right = nums.length;
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (nums[mid] >= target) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        if (left == nums.length || nums[left] != target) {
+            return positions;
+        }
+        positions[0] = left;
+        left = 0;
+        right = nums.length;
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (nums[mid] > target) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        positions[1] = left - 1;
         return positions;
     }
 
