@@ -6,6 +6,7 @@ import java.util.Set;
 public class ValidSudoku {
     
     // method 1
+    @SuppressWarnings("unchecked")
     public static boolean isValidSudoku1(char[][] board) {
         Set<Character> [] horizontalSets = new Set[9];
         Set<Character> [] verticalSets = new Set[9];
