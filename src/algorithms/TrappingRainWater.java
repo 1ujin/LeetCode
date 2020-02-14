@@ -66,7 +66,7 @@ public class TrappingRainWater {
         return water;
     }
     
-    // method 4 two pointer
+    // method 4 two pointer fastest
     public static int trap4(int[] height) {
         int water = 0, max_left = 0, max_right = 0, left = 1, right = height.length - 2;
         for (int i = 1; i < height.length - 1; i++) {
@@ -110,7 +110,7 @@ public class TrappingRainWater {
 
     public static void main(String[] args) {
         long startTime = System.nanoTime();
-        int water = trap3(new int[] {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1});
+        int water = trap4(new int[] {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1});
         long endTime = System.nanoTime();
         System.out.println(water);
         System.out.print("Duration: " + (endTime - startTime) + "ns");
