@@ -9,7 +9,7 @@ public class MultiplyStrings {
         for (int i = num1.length() - 1; i >= 0; i--) {
             int num = 0, carry = 0;
             for (int j = num2.length() - 1; j >= 0; j--) {
-                num = ((int) num1.charAt(i) - 48) * ((int) num2.charAt(j) - 48) + carry;
+                num = (num1.charAt(i) - 48) * (num2.charAt(j) - 48) + carry;
                 tmp1.insert(0, (char) (num % 10 + 48));
                 carry = num / 10;
                 num %= 10;
@@ -24,7 +24,7 @@ public class MultiplyStrings {
             int k;
             int overlap = tmp2.length() - (num1.length() - 1 - i);
             for (k = tmp1.length() - 1; k >= tmp1.length() - overlap; k--) {
-                num = ((int) tmp2.charAt(k - tmp1.length() + overlap) - 48) + ((int) tmp1.charAt(k) - 48) + tmpCarry;
+                num = (tmp2.charAt(k - tmp1.length() + overlap) - 48) + (tmp1.charAt(k) - 48) + tmpCarry;
                 tmp2.setCharAt(k - tmp1.length() + overlap, (char) (num % 10 + 48));
                 tmpCarry = num / 10;
             }
@@ -32,7 +32,7 @@ public class MultiplyStrings {
                 if (k < 0) {
                     num = tmpCarry;
                 } else {
-                    num = (int) tmp1.charAt(k) - 48 + tmpCarry;
+                    num = tmp1.charAt(k) - 48 + tmpCarry;
                 }
                 tmpCarry = num / 10;
                 tmp2.insert(0, (char) (num % 10 + 48));
@@ -73,7 +73,7 @@ public class MultiplyStrings {
 
     public static void main(String[] args) {
         long startTime = System.nanoTime();
-        String result = multiply2("123", "456");
+        String result = multiply1("123", "456");
         long endTime = System.nanoTime();
         System.out.println(result);
         System.out.print("Duration: " + (endTime - startTime) + "ns");
