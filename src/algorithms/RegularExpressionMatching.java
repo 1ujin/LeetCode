@@ -93,7 +93,7 @@ public class RegularExpressionMatching {
         boolean ans;
         if (j == pattern.length()) {
             ans = i == text.length();
-        } else{
+        } else {
             boolean first_match = (i < text.length() &&
                                    (pattern.charAt(j) == text.charAt(i) ||
                                     pattern.charAt(j) == '.'));
@@ -146,8 +146,9 @@ public class RegularExpressionMatching {
     
     public static void main(String[] args) {
         long startTime = System.nanoTime();
-        isMatch3("aaa", "a*a");
+        boolean result = isMatch3("aaa", "a*a");
         long endTime = System.nanoTime();
+        System.out.println(result);
         System.out.print("Duration: " + (endTime - startTime) + "ns");
 
     }
