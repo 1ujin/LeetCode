@@ -39,14 +39,34 @@ public class JumpGame2 {
         return step;
     }
     
-    // method 3 dynamic programming
+    // method 3 dynamic programming time limit exceeded
     public static int jump3(int[] nums) {
-        return 0;
+        int len = nums.length, step = 0;
+        boolean[] tmp = new boolean[len];
+        boolean[] dp = new boolean[len];
+        tmp[0] = true;
+        for (int i = 1; i < len; i++) {
+            step++;
+            for (int k = i; k < len; k++) {
+                if (tmp[k - 1]) {
+                    for (int j = k; j <= k + nums[k - 1] - 1; j++) {
+                        if (j >= len - 1) {
+                            return step;
+                        } else {
+                            dp[j] = true;
+                        }
+                    }
+                }
+            }
+            tmp = dp;
+            dp = new boolean[len];
+        }
+        return step;
     }
 
     public static void main(String[] args) {
         long startTime = System.nanoTime();
-        int result = jump2(new int[] {2, 3, 1, 1, 4});
+        int result = jump3(new int[] {2, 3, 1, 1, 4});
         long endTime = System.nanoTime();
         System.out.println(result);
         System.out.print("Duration: " + (endTime - startTime) + "ns");
