@@ -9,8 +9,8 @@ import java.util.Stack;
 public class NQueens {
     
     Set<Integer> cols = new HashSet<Integer>();
-    Set<Integer> slashes = new HashSet<Integer>();
-    Set<Integer> backslashes = new HashSet<Integer>();
+    Set<Integer> forwardDiagnols = new HashSet<Integer>();
+    Set<Integer> backwardDiagnols = new HashSet<Integer>();
     List<List<String>> result = new ArrayList<>();
     Stack<Integer> qStack = new Stack<>();
     
@@ -21,7 +21,7 @@ public class NQueens {
     
     private void backtrack(int i, int n) {
         for (int j = 0; j < n; j++) {
-            if (!cols.contains(j) && !slashes.contains(i + j) && !backslashes.contains(7 - i + j)) {
+            if (!cols.contains(j) && !forwardDiagnols.contains(i + j) && !backwardDiagnols.contains(7 - i + j)) {
                 qStack.push(j);
                 if (qStack.size() == n) {
                     List<String> list = new ArrayList<>();
@@ -35,13 +35,13 @@ public class NQueens {
                     result.add(list);
                 }
                 cols.add(j);
-                slashes.add(i + j);
-                backslashes.add(7 - i + j);
+                forwardDiagnols.add(i + j);
+                backwardDiagnols.add(7 - i + j);
                 backtrack(i + 1, n);
                 qStack.pop();
                 cols.remove(j);
-                slashes.remove(i + j);
-                backslashes.remove(7 - i + j);
+                forwardDiagnols.remove(i + j);
+                backwardDiagnols.remove(7 - i + j);
             }
         }
     }
