@@ -2,7 +2,7 @@ package algorithms;
 
 public class PalindromeNumber {
     
-    // method 1 ×Ö·û´®¶Ô³Æ·¨
+    // method 1 å­—ç¬¦ä¸²å¯¹ç§°æ³•
     public static boolean isPalindrome1(int x) {
         String s = String.valueOf(x);
         int len = s.length();
@@ -12,7 +12,7 @@ public class PalindromeNumber {
         return true;
     }
     
-    // method 2 ¹¹ÔìÒ»°ëÎ»ÊıµÄÄæĞòÊı
+    // method 2 æ„é€ ä¸€åŠä½æ•°çš„é€†åºæ•°
     public static boolean isPalindrome2(int x) {
         if (x < 0 || (x % 10 == 0 && x != 0)) return false;
         int revertedNumber = 0;
