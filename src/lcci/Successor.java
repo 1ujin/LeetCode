@@ -1,5 +1,7 @@
 package lcci;
 
+import java.util.Arrays;
+
 public class Successor {
     
     private class TreeNode {
@@ -55,7 +57,11 @@ public class Successor {
         root.left.right.left = solution.new TreeNode(3);
         root.left.right.right = solution.new TreeNode(5);
         
-        System.out.println(solution.inorderSuccessor2(root, root.left).val);
+        long startTime = System.nanoTime();
+        int result = solution.inorderSuccessor2(root, root.left).val;
+        long endTime = System.nanoTime();
+        System.out.println(result);
+        System.out.print("Duration: " + (endTime - startTime) + "ns");
     }
 
 }
