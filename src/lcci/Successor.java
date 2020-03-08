@@ -1,7 +1,5 @@
 package lcci;
 
-import java.util.Arrays;
-
 public class Successor {
     
     private class TreeNode {
