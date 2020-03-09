@@ -7,8 +7,7 @@ public class Tree {
     
     public Tree(int[] vals) {
         this.vals = vals;
-        if (vals.length == 0) root = null;
-        else root = generateByDfs(0);
+        this.root = generateByDfs(0);
     }
     
     public int[] getVals() { return vals; }
