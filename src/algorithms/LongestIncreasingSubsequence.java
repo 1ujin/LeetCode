@@ -1,6 +1,6 @@
 package algorithms;
 
-public class LongestIncreasingsubsequence {
+public class LongestIncreasingSubsequence {
     
     // method 1 dynamic programming
     public int lengthOfLIS1(int[] nums) {
@@ -37,7 +37,7 @@ public class LongestIncreasingsubsequence {
     }
 
     public static void main(String[] args) {
-        System.out.println(new LongestIncreasingsubsequence().lengthOfLIS2(new int[] {10, 9, 2, 5, 3, 7, 101, 18}));
+        System.out.println(new LongestIncreasingSubsequence().lengthOfLIS2(new int[] {10, 9, 2, 5, 3, 7, 101, 18}));
     }
 
 }
