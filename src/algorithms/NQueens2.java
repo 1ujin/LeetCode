@@ -14,17 +14,17 @@ public class NQueens2 {
     
     public int totalNQueens1(int n) {
         for (int col = 0; col < n; col++) {
-            if (!cols.contains(col) && !forwardDiagnols.contains(row + col) && !backwardDiagnols.contains(7 - row + col)) {
+            if (!cols.contains(col) && !forwardDiagnols.contains(row + col) && !backwardDiagnols.contains(n - 1 - row + col)) {
                 if (row >= n - 1) total++;
                 row++;
                 cols.add(col);
                 forwardDiagnols.add(row + col);
-                backwardDiagnols.add(7 - row + col);
+                backwardDiagnols.add(n - 1 - row + col);
                 totalNQueens1(n);
                 row--;
                 cols.remove(col);
                 forwardDiagnols.remove(row + col);
-                backwardDiagnols.remove(7 - row + col);
+                backwardDiagnols.remove(n - 1 - row + col);
             }
         }
         return total;
