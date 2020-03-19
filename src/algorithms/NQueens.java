@@ -21,7 +21,7 @@ public class NQueens {
     
     private void backtrack(int i, int n) {
         for (int j = 0; j < n; j++) {
-            if (!cols.contains(j) && !forwardDiagnols.contains(i + j) && !backwardDiagnols.contains(7 - i + j)) {
+            if (!cols.contains(j) && !forwardDiagnols.contains(i + j) && !backwardDiagnols.contains(n - 1 - i + j)) {
                 qStack.push(j);
                 if (qStack.size() == n) {
                     List<String> list = new ArrayList<>();
@@ -36,12 +36,12 @@ public class NQueens {
                 }
                 cols.add(j);
                 forwardDiagnols.add(i + j);
-                backwardDiagnols.add(7 - i + j);
+                backwardDiagnols.add(n - 1 - i + j);
                 backtrack(i + 1, n);
                 qStack.pop();
                 cols.remove(j);
                 forwardDiagnols.remove(i + j);
-                backwardDiagnols.remove(7 - i + j);
+                backwardDiagnols.remove(n - 1 - i + j);
             }
         }
     }
