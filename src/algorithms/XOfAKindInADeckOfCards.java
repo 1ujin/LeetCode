@@ -5,17 +5,18 @@ import java.util.Arrays;
 public class XOfAKindInADeckOfCards {
     
     public boolean hasGroupsSizeX(int[] deck) {
-        int[] count = new int[10000];
-        for (int i : deck) count[i]++;
+        int[] counts = new int[10000];
+        for (int i : deck) counts[i]++;
+//        boolean foundAny = false;
 //        int x = 0;
 //        for (int count : counts) {
-//            if (count > 0) {
-//                x = x == 0 ? count : gcd(x, count);
-//                if (x == 1) return false;
-//            }
+//            if (!foundAny) {
+//                foundAny = true;
+//                x = count;
+//            } else x = gcd(x, count);
 //        }
 //        return x > 1;
-        return Arrays.stream(count).reduce(this::gcd).getAsInt() > 1;
+        return Arrays.stream(counts).reduce(this::gcd).getAsInt() > 1; // java 8
     }
     
     private int gcd(int a, int b) {
