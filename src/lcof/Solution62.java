@@ -1,5 +1,7 @@
 package lcof;
 
+import java.util.ArrayList;
+
 import util.ListNode;
 
 public class Solution62 {
@@ -22,15 +24,34 @@ public class Solution62 {
         return tail.val;
     }
     
-    public int lastRemaining(int n, int m){
+    // method 1 fastest
+    public int lastRemaining1(int n, int m){
         int last = 0;
         for (int i = 2; i <= n; i++)
             last = (last + m) % i;
         return last;
     }
+    
+    // method 2
+    public int lastRemaining2(int n, int m) {
+        ArrayList<Integer> list = new ArrayList<>(n);
+        for (int i = 0; i < n; i++)
+            list.add(i);
+        int idx = 0;
+        while (n > 1) {
+            idx = (idx + m - 1) % n;
+            list.remove(idx);
+            n--;
+        }
+        return list.get(0);
+    }
 
     public static void main(String[] args) {
-        System.out.println(new Solution62().lastRemaining(56795, 87778));
+        long startTime = System.nanoTime();
+        int result = new Solution62().lastRemaining1(56795, 87778);
+        long endTime = System.nanoTime();
+        System.out.println(result);
+        System.out.print("Duration: " + (endTime - startTime) + "ns");
     }
 
 }
