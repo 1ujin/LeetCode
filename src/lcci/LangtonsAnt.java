@@ -1,6 +1,7 @@
 package lcci;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,39 +38,34 @@ public class LangtonsAnt {
         int[][] offset = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
         Position antPos = new Position(0, 0);
         int antDir = 2;
-        Set<Position> set = new HashSet<>(), blackSet = new HashSet<>();
-        set.add(new Position(0, 0));
+        Set<Position> blackSet = new HashSet<>();
         while (K > 0) {
             Position t = new Position(antPos.x, antPos.y);
-            if (blackSet.add(t)) antDir = Math.floorMod(antDir + 1, 4);
+            if (blackSet.add(t)) antDir = (antDir + 1) % 4;
             else {
-                antDir = Math.floorMod(antDir - 1, 4);
+                antDir = (antDir + 3) % 4;
                 blackSet.remove(t);
             }
             antPos.x += offset[antDir][0];
             antPos.y += offset[antDir][1];
-            set.add(new Position(antPos.x, antPos.y));
             K--;
         }
-        int left = 0, top = 0, right = 0, bottom = 0;
-        for (Position pos : set) {
+        int left = antPos.x, top = antPos.y, right = antPos.x, bottom = antPos.y;
+        for (Position pos : blackSet) {
             left = pos.x < left ? pos.x : left;
             top = pos.y < top ? pos.y : top;
             right = pos.x > right ? pos.x : right;
             bottom = pos.y > bottom ? pos.y : bottom;
         }
+        char[][] grid = new char[bottom - top + 1][right - left + 1];
+        for (char[] row : grid)
+            Arrays.fill(row, '_');
+        for (Position pos : blackSet)
+            grid[pos.y - top][pos.x - left] = 'X';
+        grid[antPos.y - top][antPos.x - left] = direction[antDir];
         List<String> result = new ArrayList<>();
-        for (int i = top; i <= bottom; i++) {
-            StringBuilder sb = new StringBuilder();
-            for (int j = left; j <= right; j++) {
-                if (j == antPos.x && i == antPos.y) {
-                    sb.append(direction[antDir]);
-                } else if (blackSet.contains(new Position(j, i))) {
-                    sb.append('X');
-                } else sb.append('_');
-            }
-            result.add(sb.toString());
-        }
+        for (char[] row : grid)
+            result.add(String.valueOf(row));
         return result;
     }
 
