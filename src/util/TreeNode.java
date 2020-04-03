@@ -17,8 +17,12 @@ public class TreeNode {
     
     @Override
     public String toString() {
+        return String.valueOf(val);
+    }
+    
+    public static String toTreeString(TreeNode node) {
         List<TreeNode> list = new ArrayList<>();
-        list.add(this);
+        list.add(node);
         for (int i = 0; i < list.size(); i++) {
             TreeNode t = list.get(i);
             if (t == null || (t.left == null && t.right == null))
