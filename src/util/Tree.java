@@ -1,7 +1,9 @@
 package util;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.stream.Collectors;
 
 public class Tree {
     
@@ -45,11 +47,16 @@ public class Tree {
 //            return null;
 //        }
 //        int nullCount = this.nullCount;
-//        return new TreeNode(vals[index], generateByDfs(index * 2 + 1 - nullCount * 2), generateByDfs(index * 2 + 2 - nullCount * 2));
+//        return new TreeNode(vals[index],
+//                generateByDfs(index * 2 + 1 - nullCount * 2),
+//                generateByDfs(index * 2 + 2 - nullCount * 2));
 //    }
     
-    public static void main(String[] args) {
-        TreeNode root = new Tree(new int[] {0, 1, 2, 3, Integer.MIN_VALUE, Integer.MIN_VALUE, 6}).getRoot();
-        System.out.println(root.right.right.val);
+    @Override
+    public String toString() {
+        return Arrays.stream(vals).boxed().collect(Collectors.toList()).stream()
+                .map(i -> i == Integer.MIN_VALUE ? null : i)
+                .collect(Collectors.toList()).toString();
     }
+
 }
