@@ -1,5 +1,7 @@
 package util;
 
+import java.util.Arrays;
+
 public class List {
     
     private int[] vals;
@@ -24,5 +26,10 @@ public class List {
 
     public ListNode getHead() {
         return head;
+    }
+    
+    @Override
+    public String toString() {
+        return Arrays.toString(vals);
     }
 }
