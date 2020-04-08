@@ -53,7 +53,8 @@ public class SparseSimilarity {
             }
             for (int j = 0; j < i; j++) {
                 if (dupl[i][j] == 0) continue;
-                float similarity = (float) dupl[i][j] / (float) (docs[i].length + docs[j].length - dupl[i][j]);
+                float similarity = (float) dupl[i][j] / (float) (docs[i].length
+                        + docs[j].length - dupl[i][j]);
                 result.add(String.format("%d,%d: %.4f", j, i, similarity));
             }
         }
