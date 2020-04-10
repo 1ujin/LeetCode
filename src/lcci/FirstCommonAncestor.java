@@ -1,4 +1,4 @@
-package lcof;
+package lcci;
 
 import util.Tree;
 import util.TreeNode;
