@@ -11,6 +11,7 @@ public class ListNode {
     }
     
     public static String toLinkedListString(ListNode node) {
+        if (node == null) return null;
         StringBuilder s = new StringBuilder();
         s.append(node.val);
         while (node.next != null) {
