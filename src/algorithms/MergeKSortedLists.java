@@ -1,6 +1,5 @@
 package algorithms;
 
-import algorithms.MergeTwoSortedLists;
 import algorithms.MergeTwoSortedLists.ListNode;
 
 public class MergeKSortedLists {
