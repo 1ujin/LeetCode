@@ -1,8 +1,19 @@
 package sort;
 
+/**
+ * <p>平均时间复杂度: O(nlogn)
+ * <p>最好情况: O(nlogn)
+ * <p>最坏情况: O(nlogn)
+ * <p>额外空间复杂度: O(1)
+ * <p>排序方式: In-place
+ * <p>稳定性: 不稳定
+ * <p>描述: (最大/小堆, 升/降序区)。
+ * 从堆顶把根交换出来放在有序区之前, 再恢复堆。
+ */
 public class HeapSort {
     
-    public static void minHeapSort(int[] a) {
+    // Ascending
+    public static void ascHeapSort(int[] a) {
         int len = a.length;
         // build maximum heap
         for (int i = len - 1 >>> 1; i > -1; i--)
@@ -33,7 +44,8 @@ public class HeapSort {
         }
     }
 
-    public static void maxHeapSort(int[] a) {
+    // Descending
+    public static void descHeapSort(int[] a) {
         int len = a.length;
         // build minimum heap
         for (int i = len - 1 >>> 1; i > -1; i--)
