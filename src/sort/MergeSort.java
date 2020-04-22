@@ -15,9 +15,9 @@ public class MergeSort {
     /**
      * 迭代法 (Bottom-up)
      * <ul>
-     * <li>1.将序列每相邻两个数字进行归并操作，形成ceil(n/2)个序列，排序后每个序列包含两/一个元素
-     * <li>2.若此时序列数不是1个则将上述序列再次归并，形成ceil(n/4)个序列，每个序列包含四/三个元素
-     * <li>3.重复步骤2，直到所有元素排序完毕，即序列数为1
+     * <li>1.将序列每相邻两个数字进行归并操作, 形成{@code ceil(n/2)}个序列, 排序后每个序列包含两/一个元素
+     * <li>2.若此时序列数不是1个则将上述序列再次归并, 形成{@code ceil(n/4)}个序列, 每个序列包含四/三个元素
+     * <li>3.重复步骤2, 直到所有元素排序完毕, 即序列数为1
      * </ul>
      */
     public static void mergeSort(int[] a) {
@@ -25,18 +25,18 @@ public class MergeSort {
         int[] ordered = new int[len];
         for (int i = 2; i < len << 1; i <<= 1) {
             for (int j = 0; j < (len + i - 1) / i; j++) {
-                int left = i * j;
-                int mid = left + (i >> 1) >= len ? len - 1 : left + (i >> 1);
-                int right = i * (j + 1) - 1 >= len ? len - 1 : i * (j + 1) - 1;
-                int begin = left, l = left, m = mid;
-                while (l < mid && m <= right)
-                    if (a[l] < a[m]) ordered[begin++] = a[l++];
-                    else ordered[begin++] = a[m++];
-                while (l < mid)
-                    ordered[begin++] = a[l++];
-                while (m <= right)
-                    ordered[begin++] = a[m++];
-                System.arraycopy(ordered, left, a, left, right - left + 1);
+                int begin = i * j;
+                int end = begin + i - 1 < len ? begin + i - 1 : len - 1;
+                int mid = begin + end >> 1;
+                int begin1 = begin, end1 = mid, begin2 = mid + 1, end2 = end;
+                int k = begin;
+                while (begin1 <= end1 && begin2 <= end2)
+                    ordered[k++] = a[begin1] < a[begin2] ? a[begin1++] : a[begin2++];
+                while (begin1 <= end1)
+                    ordered[k++] = a[begin1++];
+                while (begin2 <= end2)
+                    ordered[k++] = a[begin2++];
+                System.arraycopy(ordered, begin, a, begin, end - begin + 1);
             }
         }
     }
@@ -44,9 +44,9 @@ public class MergeSort {
     /**
      * 递归法 (Top-down)
      * <ul>
-     * <li>1.申请空间，使其大小为两个已经排序序列之和，该空间用来存放合并后的序列
-     * <li>2.设定两个指针，最初位置分别为两个已经排序序列的起始位置
-     * <li>3.比较两个指针所指向的元素，选择相对小的元素放入到合并空间，并移动指针到下一位置
+     * <li>1.申请空间, 使其大小为两个已经排序序列之和，该空间用来存放合并后的序列
+     * <li>2.设定两个指针, 最初位置分别为两个已经排序序列的起始位置
+     * <li>3.比较两个指针所指向的元素, 选择相对小的元素放入到合并空间, 并移动指针到下一位置
      * <li>4.重复步骤3直到某一指针到达序列尾
      * <li>5.将另一序列剩下的所有元素直接复制到合并序列尾
      * </ul>
@@ -59,7 +59,7 @@ public class MergeSort {
 
     static void recur(int[] a, int[] ordered, int begin, int end) {
         if (begin >= end) return;
-        int len = end - begin, mid = (len >> 1) + begin;
+        int mid = (end - begin >> 1) + begin;
         int begin1 = begin, end1 = mid, begin2 = mid + 1, end2 = end;
         recur(a, ordered, begin1, end1);
         recur(a, ordered, begin2, end2);
