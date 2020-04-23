@@ -19,16 +19,16 @@ public class Solution33 {
                 && recur(postorder, pivot, end - 1);
     }
     
-    // method 2
+    // method 2 stack
     public boolean verifyPostorder2(int[] postorder) {
         Stack<Integer> stack = new Stack<>();
-        int root = Integer.MAX_VALUE;
-        for (int i = postorder.length - 1; i >= 0; i--) {
-            if (postorder[i] > root)
+        int parent = Integer.MAX_VALUE;
+        for (int i = postorder.length - 1; i > -1; i--) {
+            if (postorder[i] > parent)
                 return false;
             while (!stack.isEmpty() && stack.peek() > postorder[i])
-                root = stack.pop();
-            stack.add(postorder[i]);
+                parent = stack.pop();
+            stack.push(postorder[i]);
         }
         return true;
     }
