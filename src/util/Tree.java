@@ -23,7 +23,7 @@ public class Tree {
     private void generateByBfs(Queue<TreeNode> queue) {
         if (vals.length == 0) return;
         this.root = new TreeNode(vals[0]);
-        queue.add(root);
+        queue.offer(root);
         int index = 0;
         while (!queue.isEmpty()) {
             TreeNode node = queue.poll();
@@ -31,12 +31,12 @@ public class Tree {
             if (index < vals.length - 1) {
                 if (vals[++index] == Integer.MIN_VALUE) node.left = null;
                 else node.left = new TreeNode(vals[index]);
-                queue.add(node.left);
+                queue.offer(node.left);
             } else break;
             if (index < vals.length - 1) {
                 if (vals[++index] == Integer.MIN_VALUE) node.right = null;
                 else node.right = new TreeNode(vals[index]);
-                queue.add(node.right);
+                queue.offer(node.right);
             } else break;
         }
     }
