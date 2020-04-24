@@ -1,7 +1,6 @@
 package util;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 public class TreeNode {
@@ -21,18 +20,18 @@ public class TreeNode {
     }
     
     public static String toTreeString(TreeNode node) {
-        List<TreeNode> list = new ArrayList<>();
-        list.add(node);
-        for (int i = 0; i < list.size(); i++) {
-            TreeNode t = list.get(i);
-            if (t == null || (t.left == null && t.right == null))
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(node);
+        for (int i = 0; i < stack.size(); i++) {
+            TreeNode t = stack.get(i);
+            if (t == null)
                 continue;
-            list.add(t.left);
-            list.add(t.right);
+            stack.push(t.left);
+            stack.push(t.right);
         }
-        if (list.get(list.size() - 1) == null)
-            list.remove(list.size() - 1);
-        return list.stream().map(n -> n == null ? null : n.val)
+        while (!stack.isEmpty() && stack.peek() == null)
+            stack.pop();
+        return stack.stream().map(n -> n == null ? "null" : n.val)
                 .collect(Collectors.toList()).toString();
     }
 }
