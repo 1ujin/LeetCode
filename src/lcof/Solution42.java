@@ -13,7 +13,7 @@ public class Solution42 {
         return max;
     }
     
-    // divide and conquer
+    // method 2 divide and conquer
     public int maxSubArray2(int[] nums) {
         return divideConquer(nums, 0, nums.length - 1);
     }
