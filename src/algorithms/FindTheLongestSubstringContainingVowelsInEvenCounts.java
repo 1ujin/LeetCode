@@ -30,9 +30,12 @@ public class FindTheLongestSubstringContainingVowelsInEvenCounts {
                 default:
                     break;
             }
-            if (vowelsBmps[vowelsBmp] > -1)
-                len = Math.max(len, i - vowelsBmps[vowelsBmp]);
-            else vowelsBmps[vowelsBmp] = i;
+            // 该元音奇偶状态第一次出现时，记录当前的位置
+            if (vowelsBmps[vowelsBmp] == -1)
+                vowelsBmps[vowelsBmp] = i + 1;
+            // 再次出现该元音奇偶状态时，当前位置减去第一次出现时的位置
+            // 同种奇偶状态的两个位置，中间的子串必为偶数状态，更新最大值
+            else len = Math.max(len, i + 1 - vowelsBmps[vowelsBmp]);
         }
         return len;
     }
