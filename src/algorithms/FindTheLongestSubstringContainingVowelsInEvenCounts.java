@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class FindTheLongestSubstringContainingVowelsInEvenCounts {
     
     public int findTheLongestSubstring(String s) {
-        int len = 0, vowelsBmp = 0, tmp = -1;
+        int len = 0, vowelsBmp = 0;
         int[] vowelsBmps = new int[1 << 5];
         Arrays.fill(vowelsBmps, -1);
         vowelsBmps[0] = 0;
