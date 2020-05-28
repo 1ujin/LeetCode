@@ -9,17 +9,18 @@ public class ZigzagConversion {
     public static String convert1(String s, int numRows) {
         if (numRows == 1) return s;
         List<StringBuilder> rows = new ArrayList<StringBuilder>();
-        for(int i = 0; i < numRows; i++) rows.add(new StringBuilder());
+        for(int i = 0; i < numRows; i++)
+            rows.add(new StringBuilder());
         for (int i = 0; i < s.length(); i++) {
             int remainder = i % ((numRows - 1) * 2);
-            if (remainder < numRows) {
+            if (remainder < numRows)
                 rows.get(remainder).append(s.charAt(i));
-            } else {
+            else
                 rows.get(2 * (numRows - 1) - remainder).append(s.charAt(i));
-            }
         }
         String ret = "";
-        for (StringBuilder row : rows) ret += row.toString();
+        for (StringBuilder row : rows)
+            ret += row.toString();
         return ret;
     }
     
@@ -33,14 +34,12 @@ public class ZigzagConversion {
         for(int i = 0; i < numRows; i++) {
             for(int j = i; j < arr.length; j += round ) {
                 res[cur++] = arr[j];
-                // µ±i²»ÎªµÚÒ»ÐÐºÍ×îºóÒ»ÐÐÊ±£¬Òª¶îÍâÌí¼Ó×Ö·û
-                // ²¢ÔÚºóÐø±éÀújÊ±¹ýÂËµôÕâÐ©ÒÑ¾­Ìí¼ÓµÄ(j + round - i * 2 < arr.length)
-                if(i > 0 && i < numRows - 1 && j + round - i * 2 < arr.length) {
+                // å½“iä¸ä¸ºç¬¬ä¸€è¡Œå’Œæœ€åŽä¸€è¡Œæ—¶ï¼Œè¦é¢å¤–æ·»åŠ å­—ç¬¦
+                // å¹¶åœ¨åŽç»­éåŽ†jæ—¶è¿‡æ»¤æŽ‰è¿™äº›å·²ç»æ·»åŠ çš„(j + round - i * 2 < arr.length)
+                if(i > 0 && i < numRows - 1 && j + round - i * 2 < arr.length)
                     res[cur++] = arr[j + round - i * 2];
-                }
             }
         }
-
         return new String(res);
     }
 
