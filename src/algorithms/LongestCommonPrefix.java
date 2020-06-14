@@ -26,10 +26,10 @@ public class LongestCommonPrefix {
     public static String longestCommonPrefix2(String[] strs) {
         if (strs.length == 0) return "";
         String prefix = strs[0];
-        // ���ҵ���̵��ַ�������Ϊ��һ�����ٶȻ����
+        // 先找到最短的字符串来作为第一个，速度会更快
         for (int i = 1; i < strs.length; i++)
            while (strs[i].indexOf(prefix) != 0) {
-               // �޷�ƥ�������prefix�����³���
+               // 无法匹配就缩短prefix并重新尝试
                prefix = prefix.substring(0, prefix.length() - 1);
                if (prefix.isEmpty()) return "";
            }        
@@ -41,14 +41,13 @@ public class LongestCommonPrefix {
         if (strs == null || strs.length == 0) return "";
         for (int i = 0; i < strs[0].length() ; i++){
             char c = strs[0].charAt(i);
-            // ѡһ���ַ����ں��������Ա�б���ƥ��
-            for (int j = 1; j < strs.length; j ++) {
-                // ƥ�������ѭ��������ֱ�����������ص�ǰ��ƥ��Ľ��
+            // 选一个字符并在后续数组成员中遍历匹配
+            for (int j = 1; j < strs.length; j ++)
+                // 匹配则继续循环，否则直接跳出并返回当前已匹配的结果
                 if (i == strs[j].length() || strs[j].charAt(i) != c)
                     return strs[0].substring(0, i);             
-            }
         }
-        // ȫ����ƥ��
+        // 全部都匹配
         return strs[0];
     }
     
@@ -58,28 +57,27 @@ public class LongestCommonPrefix {
         return longestCommonPrefix(strs, 0 , strs.length - 1);
     }
 
-    // divide ��
+    // divide 分
     private static String longestCommonPrefix(String[] strs, int l, int r) {
-        // �����ٷ�
-        if (l == r) {
+        // 不能再分
+        if (l == r)
             return strs[l];
-        } else {
-            int mid = (l + r)/2;
-            // �ݹ����
+        else {
+            int mid = l + r >> 1;
+            // 递归调用
             String lcpLeft = longestCommonPrefix(strs, l, mid);
             String lcpRight = longestCommonPrefix(strs, mid + 1, r);
-            // ����������֧�Ľ�������ظ���һ��lcpLeft��lcpRight
+            // 处理两个分支的结果并返回给上一个lcpLeft或lcpRight
             return commonPrefix(lcpLeft, lcpRight);
         }
     }
 
-    // conquer �� �൱�� method 2
+    // conquer 治 相当于 method 2
     private static String commonPrefix(String left,String right) {
         int min = Math.min(left.length(), right.length());       
-        for (int i = 0; i < min; i++) {
+        for (int i = 0; i < min; i++)
             if (left.charAt(i) != right.charAt(i))
                 return left.substring(0, i);
-        }
         return left.substring(0, min);
     }
     
@@ -88,26 +86,26 @@ public class LongestCommonPrefix {
         if (strs == null || strs.length == 0)
             return "";
         int high = Integer.MAX_VALUE;
-        // ��ȡ����ַ����ĳ���
+        // 获取最短字符串的长度
         for (String str : strs)
-        	high = Math.min(high, str.length());
+            high = Math.min(high, str.length());
         int low = 1;
         while (low <= high) {
-            int middle = (low + high) / 2;
+            int middle = low + high >> 1;
             if (isCommonPrefix(strs, middle))
-            	// �����ַ���ȫ��ƥ�������Ұ�������ѡ����ָ��
+                // 所有字符串全部匹配则在右半区重新选择左指针
                 low = middle + 1;
             else
-            	// ���������������ѡ����ָ��
+                // 否则在左半区重新选择右指针
                 high = middle - 1;
         }
-        return strs[0].substring(0, (low + high) / 2);
+        return strs[0].substring(0, low + high >> 1);
     }
 
     private static boolean isCommonPrefix(String[] strs, int len){
         String str1 = strs[0].substring(0, len);
         for (int i = 1; i < strs.length; i++)
-        	// startWith����ַ����Ƿ���ָ����ǰ׺��ʼ
+            // startWith检测字符串是否以指定的前缀开始
             if (!strs[i].startsWith(str1))
                 return false;
         return true;
@@ -120,10 +118,10 @@ public class LongestCommonPrefix {
         boolean tag = false;
         int min_len = Integer.MAX_VALUE;
         for (String str: strs)
-        	min_len = Math.min(min_len, str.length());
+            min_len = Math.min(min_len, str.length());
         for (int i = min_len - 1; i > -1; i--) {
             tag = true;
-            // ȡ��̵��ַ���ȥƥ�������ַ�������ƥ����ĩλ��ǰ
+            // 取最短的字符串去匹配所有字符串，不匹配则将末位提前
             String tmp = strs[0].substring(0, i + 1);
             for (String str : strs) {
                 if (!str.startsWith(tmp)) {
