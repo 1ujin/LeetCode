@@ -102,6 +102,7 @@ class FooBySynchronized {
         printFirst.run();
         synchronized (this) {
             lock++;
+            // 调用 notify() 会随机通知，此处如果通知到 t3 线程会死锁，所以全部通知
             notifyAll();
         }
     }
@@ -165,42 +166,31 @@ class FooByLock {
 
     public void first(Runnable printFirst) throws InterruptedException {
         lock.lock();
-        try {
-            // printFirst.run() outputs "first". Do not change or remove this line.
-            printFirst.run();
-            flag++;
-            secondCondition.signal();
-        } finally {
-            lock.unlock();
-        }
+        // printFirst.run() outputs "first". Do not change or remove this line.
+        printFirst.run();
+        flag++;
+        secondCondition.signal();
+        lock.unlock();
     }
 
     public void second(Runnable printSecond) throws InterruptedException {
         lock.lock();
-        try {
-            while (flag != 2) {
-                secondCondition.await();
-            }
-            // printSecond.run() outputs "second". Do not change or remove this line.
-            printSecond.run();
-            flag++;
-            thirdCondition.signal();
-        } finally {
-            lock.unlock();
-        }
+        while (flag != 2)
+            secondCondition.await();
+        // printSecond.run() outputs "second". Do not change or remove this line.
+        printSecond.run();
+        flag++;
+        thirdCondition.signal();
+        lock.unlock();
     }
 
     public void third(Runnable printThird) throws InterruptedException {
         lock.lock();
-        try {
-            while (flag != 3) {
-                thirdCondition.await();
-            }
-            // printThird.run() outputs "third". Do not change or remove this line.
-            printThird.run();
-        } finally {
-            lock.unlock();
-        }
+        while (flag != 3)
+            thirdCondition.await();
+        // printThird.run() outputs "third". Do not change or remove this line.
+        printThird.run();
+        lock.unlock();
     }
 }
 
