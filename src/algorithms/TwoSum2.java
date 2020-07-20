@@ -8,7 +8,7 @@ public class TwoSum2 {
         int len = numbers.length;
         for (int i = 0; i < len - 1; i++) {
             int lo = i + 1, hi = len - 1, tmp = target - numbers[i];
-            while (lo < hi + 1) {
+            while (lo <= hi) {
                 int mid = lo + hi >> 1;
                 if (numbers[mid] < tmp)
                     lo = mid + 1;
