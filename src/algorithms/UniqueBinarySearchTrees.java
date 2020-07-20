@@ -1,6 +1,6 @@
 package algorithms;
 
-public class UniqueBinarySearchTree {
+public class UniqueBinarySearchTrees {
     
     public int numTrees(int n) {
         int[] dp = new int[n + 1];
@@ -13,7 +13,7 @@ public class UniqueBinarySearchTree {
     }
 
     public static void main(String[] args) {
-        System.out.println(new UniqueBinarySearchTree().numTrees(5));
+        System.out.println(new UniqueBinarySearchTrees().numTrees(5));
     }
 
 }
