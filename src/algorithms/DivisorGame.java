@@ -9,7 +9,7 @@ public class DivisorGame {
 
     // method 2 dynamic programming
     private boolean divisorGame2(int N) {
-        boolean[] dp = new boolean[N + 5];
+        boolean[] dp = new boolean[N + 2];
         dp[2] = true;
         for (int i = 3; i <= N; i++) {
             for (int j = 1; j < i; j++) {
