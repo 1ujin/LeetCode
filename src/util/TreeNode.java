@@ -7,6 +7,7 @@ public class TreeNode {
     public int val;
     public TreeNode left;
     public TreeNode right;
+    public TreeNode() {}
     public TreeNode(int x) { val = x; }
     public TreeNode(int val, TreeNode left, TreeNode right) {
         this.val = val;
@@ -19,9 +20,9 @@ public class TreeNode {
         return String.valueOf(val);
     }
     
-    public static String toTreeString(TreeNode node) {
+    public static String toTreeString(TreeNode root) {
         Stack<TreeNode> stack = new Stack<>();
-        stack.push(node);
+        stack.push(root);
         for (int i = 0; i < stack.size(); i++) {
             TreeNode t = stack.get(i);
             if (t == null)
