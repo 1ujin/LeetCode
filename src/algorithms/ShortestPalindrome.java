@@ -26,7 +26,7 @@ public class ShortestPalindrome {
         return new String(newcs);
     }
     
-    // method 2
+    // method 2 fastest
     public String shortestPalindrome2(String s) {
         char[] cs = s.toCharArray();
         int len = cs.length;
@@ -38,8 +38,9 @@ public class ShortestPalindrome {
         }
         if(i == len) return s;
         String suffix = s.substring(i);
-        String prefix = new StringBuilder(suffix).reverse().toString();
-        return prefix + shortestPalindrome2(s.substring(0, i)) + suffix;
+        StringBuilder prefix = new StringBuilder(suffix).reverse();
+        return prefix.append(shortestPalindrome2(s.substring(0, i)))
+                .append(suffix).toString();
     }
 
     public static void main(String[] args) {
