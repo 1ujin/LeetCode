@@ -21,8 +21,9 @@ public class Solution20 {
                 case '+':
                 case '-': id = 1; break;
                 case '.': id = 3; break;
+                case 'E':
                 case 'e': id = 4; break;
-                default: if (c > 47 && c < 58) id = 2;
+                default: if (c >= '0' && c <= '9') id = 2;
             }
             if (id < 0) return false;
             state = matrix[state][id];
