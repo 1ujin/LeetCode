@@ -25,14 +25,12 @@ public class PopulatingNextRightPointersInEachNode2 {
         }
     };
     
-    Node prev, next;
     
     public Node connect(Node root) {
         if (root == null) return null;
         Node begin = root;
         while (begin != null) {
-            prev = null;
-            next = null;
+            Node prev = null, next = null;
             for (Node node = begin; node != null; node = node.next) {
                 if (node.left != null) {
                     if (prev != null) prev.next = node.left;
