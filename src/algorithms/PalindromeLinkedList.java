@@ -21,7 +21,7 @@ public class PalindromeLinkedList {
         } else return false;
     }
     
-    // method 2 fastest
+    // method 2 two pointer fastest
     public boolean isPalindrome2(ListNode head) {
         if (head == null) return true;
         ListNode fast = head, slow = head, prev = null;
