@@ -1,6 +1,6 @@
-package algorithms;
+package lcp;
 
-public class UIBDOe {
+class UIBDOe {
     
     public int minimumOperations(String leaves) {
         char[] cs = leaves.toCharArray();
@@ -17,6 +17,10 @@ public class UIBDOe {
         }
         return dp[len - 1][2];
     }
+    
+}
+
+public class LCP19 {
 
     public static void main(String[] args) {
         System.out.println(new UIBDOe().minimumOperations("rrryyyrryyyrr"));
