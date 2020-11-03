@@ -9,20 +9,20 @@ public class InsertIntervals {
         if (len == 0) return new int[][] { newInterval };
         while (lo < len && intervals[lo][1] < newInterval[0]) lo++;
         if (lo == len) {
-            int[][] newIntervals = new int[intervals.length + 1][2];
+            int[][] newIntervals = new int[len + 1][2];
             System.arraycopy(intervals, 0, newIntervals, 0, len);
             newIntervals[len] = newInterval;
             return newIntervals;
-        } else left = intervals[lo][0] < newInterval[0] ? intervals[lo][0] : newInterval[0];
+        } else left = Math.min(intervals[lo][0], newInterval[0]);
         while (hi > -1 && intervals[hi][0] > newInterval[1]) hi--;
         if (hi == -1) {
-            int[][] newIntervals = new int[intervals.length + 1][2];
-            System.arraycopy(intervals, 1, newIntervals, 1, len);
+            int[][] newIntervals = new int[len + 1][2];
+            System.arraycopy(intervals, 0, newIntervals, 1, len);
             newIntervals[0] = newInterval;
             return newIntervals;
-        } else right = intervals[hi][1] > newInterval[1] ? intervals[hi][1] : newInterval[1];
+        } else right = Math.max(intervals[hi][1], newInterval[1]);
         int[][] newIntervals = new int[len - hi + lo][2];
-        System.arraycopy(intervals, 0, newIntervals, 0, lo);
+        System.arraycopy(intervals, 0, newIntervals, 0, lo); 
         newIntervals[lo] = new int[] { left, right };
         System.arraycopy(intervals, hi + 1, newIntervals, lo + 1, len - hi - 1);
         return newIntervals;
