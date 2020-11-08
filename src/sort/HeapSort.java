@@ -61,7 +61,7 @@ public class HeapSort {
     }
     
     private static void minHeapify(int[] a, int i, int len) {
-        int l = (i << 2) + 1, r = l + 1;
+        int l = (i << 1) + 1, r = l + 1;
         if (l >= len) return;
         int minc = l;
         if (r < len && a[l] > a[r])
