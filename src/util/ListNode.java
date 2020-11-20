@@ -11,14 +11,14 @@ public class ListNode {
         return String.valueOf(val);
     }
     
-    public static String toLinkedListString(ListNode node) {
-        if (node == null) return null;
+    public static String toLinkedListString(ListNode head) {
+        if (head == null) return null;
         StringBuilder s = new StringBuilder();
-        s.append(node.val);
-        while (node.next != null) {
-            node = node.next;
+        s.append(head.val);
+        while (head.next != null) {
+            head = head.next;
             s.append(" -> ");
-            s.append(node.val);
+            s.append(head.val);
         }
         return s.toString();
     }
