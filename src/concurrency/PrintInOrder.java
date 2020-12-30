@@ -1,5 +1,7 @@
 package concurrency;
 
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -155,42 +157,74 @@ class FooBySemaphore {
 // method 6 lock
 class FooByLock {
     
-    private int flag = 1;
+    private int flag = 0;
     private ReentrantLock lock = new ReentrantLock();
-    private Condition secondCondition = lock.newCondition();
-    private Condition thirdCondition = lock.newCondition();
-
-    public FooByLock() {
-        
-    }
+    private Condition condition = lock.newCondition();
 
     public void first(Runnable printFirst) throws InterruptedException {
         lock.lock();
-        // printFirst.run() outputs "first". Do not change or remove this line.
-        printFirst.run();
-        flag++;
-        secondCondition.signal();
-        lock.unlock();
+        try {
+            // printFirst.run() outputs "first". Do not change or remove this line.
+            printFirst.run();
+            flag++;
+            // 调用 signal() 会随机通知，此处如果通知到 t3 线程会死锁，所以全部通知
+            condition.signalAll();
+        } finally {
+            lock.unlock();
+        }
     }
 
     public void second(Runnable printSecond) throws InterruptedException {
         lock.lock();
-        while (flag != 2)
-            secondCondition.await();
-        // printSecond.run() outputs "second". Do not change or remove this line.
-        printSecond.run();
-        flag++;
-        thirdCondition.signal();
-        lock.unlock();
+        try {
+            while (flag != 1)
+                condition.await();
+            // printSecond.run() outputs "second". Do not change or remove this line.
+            printSecond.run();
+            flag++;
+            // 只剩 t3 线程需要通知，不用全部通知
+            condition.signal();
+        } finally {
+            lock.unlock();
+        }
     }
 
     public void third(Runnable printThird) throws InterruptedException {
         lock.lock();
-        while (flag != 3)
-            thirdCondition.await();
-        // printThird.run() outputs "third". Do not change or remove this line.
+        try {
+            while (flag != 2)
+                condition.await();
+            // printThird.run() outputs "third". Do not change or remove this line.
+            printThird.run();
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+
+// method 7 blocking queue
+class FooByBlockingQueue {
+    // 类似 Semaphore
+    private BlockingQueue<Integer> secondQueue = new ArrayBlockingQueue<>(1);
+    private BlockingQueue<Integer> thirdQueue = new ArrayBlockingQueue<>(1);
+    
+    public void first(Runnable printFirst) throws InterruptedException {
+        // printFirst.run() outputs "first". Do not change or remove this line.
+        printFirst.run();
+        secondQueue.put(2);
+    }
+    
+    public void second(Runnable printSecond) throws InterruptedException {
+        secondQueue.take();
+        // printFirst.run() outputs "first". Do not change or remove this line.
+        printSecond.run();
+        thirdQueue.put(3);
+    }
+    
+    public void third(Runnable printThird) throws InterruptedException {
+        thirdQueue.take();
+        // printFirst.run() outputs "first". Do not change or remove this line.
         printThird.run();
-        lock.unlock();
     }
 }
 
@@ -198,7 +232,7 @@ public class PrintInOrder {
 
     public static void main(String[] args) {
         ExecutorService exec = Executors.newCachedThreadPool();
-        FooByLock foo = new FooByLock();
+        FooByBlockingQueue foo = new FooByBlockingQueue();
         // 三种不同的方式建立线程，推荐实现Runnable接口
         Runnable t1 = new Runnable() {
             public void run() {
@@ -206,7 +240,7 @@ public class PrintInOrder {
                     TimeUnit.MILLISECONDS.sleep(2000);
                     foo.first(new Runnable() {
                         public void run() {
-                            System.out.print("one");
+                            System.out.print("first");
                         }
                     });
                 } catch (InterruptedException e) {
@@ -218,7 +252,7 @@ public class PrintInOrder {
             try {
                 TimeUnit.MILLISECONDS.sleep(1000);
                 foo.second(() -> {
-                    System.out.print("two");
+                    System.out.print("second");
                 });
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -227,7 +261,7 @@ public class PrintInOrder {
         Thread t3 = new Thread(() -> {
             try {
                 foo.third(() -> {
-                    System.out.print("three");
+                    System.out.print("third");
                 });
             } catch (InterruptedException e) {
                 e.printStackTrace();
