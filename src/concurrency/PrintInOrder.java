@@ -22,7 +22,6 @@ class FooByCountDownLatch {
     }
 
     public void second(Runnable printSecond) throws InterruptedException {
-
         firstLatch.await();
         // printSecond.run() outputs "second". Do not change or remove this line.
         printSecond.run();
@@ -112,7 +111,8 @@ class FooBySynchronized {
         // printSecond.run() outputs "second". Do not change or remove this line.
         printSecond.run();
         lock++;
-        notifyAll();
+        // 只剩 t3 线程需要通知，不用全部通知
+        notify();
     }
 
     public void third(Runnable printThird) throws InterruptedException {
@@ -128,24 +128,24 @@ class FooBySynchronized {
 // method 5 semaphore
 class FooBySemaphore {
     
-    private Semaphore secondSemaphore = new Semaphore(0);
-    private Semaphore thirdSemaphore = new Semaphore(0);
+    private Semaphore secondSemaphore = new Semaphore(0); // second 方法 0 个许可
+    private Semaphore thirdSemaphore = new Semaphore(0); // third 方法 0 个许可
     
     public void first(Runnable printFirst) throws InterruptedException {
         // printFirst.run() outputs "first". Do not change or remove this line.
         printFirst.run();
-        secondSemaphore.release();
+        secondSemaphore.release(); // 给 second 方法发 1 个许可
     }
 
     public void second(Runnable printSecond) throws InterruptedException {
-        secondSemaphore.acquire();
+        secondSemaphore.acquire(); // 消耗 1 个 second 许可才能往下执行
         // printSecond.run() outputs "second". Do not change or remove this line.
         printSecond.run();
-        thirdSemaphore.release();
+        thirdSemaphore.release(); // 给 third 方法发 1 个许可
     }
 
     public void third(Runnable printThird) throws InterruptedException {
-        thirdSemaphore.acquire();
+        thirdSemaphore.acquire(); // 消耗 1 个 third 许可才能往下执行
         // printThird.run() outputs "third". Do not change or remove this line.
         printThird.run();
     }
