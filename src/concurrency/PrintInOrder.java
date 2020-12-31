@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-// method 1 count down latch
+// method 1 count down latch 倒计时门闩
 class FooByCountDownLatch {
     
     private final CountDownLatch firstLatch = new CountDownLatch(1);
@@ -92,7 +92,7 @@ class FooByAtomic {
 
 }
 
-// method 4 synchronized
+// method 4 synchronized 同步
 class FooBySynchronized {
     
     private int lock = 0;
@@ -127,7 +127,7 @@ class FooBySynchronized {
 
 }
 
-// method 5 semaphore
+// method 5 semaphore 信号旗
 class FooBySemaphore {
     
     private Semaphore secondSemaphore = new Semaphore(0); // second 方法 0 个许可
@@ -154,7 +154,7 @@ class FooBySemaphore {
 
 }
 
-// method 6 lock
+// method 6 lock 重入锁
 class FooByLock {
     
     private int flag = 0;
@@ -178,6 +178,7 @@ class FooByLock {
         lock.lock();
         try {
             while (flag != 1)
+                // 与此相关的锁被释放，出于线程调度目的，当前线程被禁用并休眠直到被通知
                 condition.await();
             // printSecond.run() outputs "second". Do not change or remove this line.
             printSecond.run();
@@ -202,8 +203,9 @@ class FooByLock {
     }
 }
 
-// method 7 blocking queue
+// method 7 blocking queue 阻塞队列
 class FooByBlockingQueue {
+    
     // 类似 Semaphore
     private BlockingQueue<Integer> secondQueue = new ArrayBlockingQueue<>(1);
     private BlockingQueue<Integer> thirdQueue = new ArrayBlockingQueue<>(1);
@@ -232,7 +234,7 @@ public class PrintInOrder {
 
     public static void main(String[] args) {
         ExecutorService exec = Executors.newCachedThreadPool();
-        FooByBlockingQueue foo = new FooByBlockingQueue();
+        FooByLock foo = new FooByLock();
         // 三种不同的方式建立线程，推荐实现Runnable接口
         Runnable t1 = new Runnable() {
             public void run() {
