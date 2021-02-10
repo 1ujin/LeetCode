@@ -17,14 +17,13 @@ public class PermutationInString {
             res = res && counts1[i] == counts2[i];
         if (res)
             return res;
-        for (int i = len; i < cs.length; i++) {
+        loop: for (int i = len; i < cs.length; i++) {
             counts2[cs[i - len] - 'a']--;
             counts2[cs[i] - 'a']++;
-            res = true;
             for (int j = 0; j < 26; j++)
-                res = res && counts1[j] == counts2[j];
-            if (res)
-                return res;
+                if (counts1[j] != counts2[j])
+                    continue loop;
+            return true;
         }
         return false;
     }
