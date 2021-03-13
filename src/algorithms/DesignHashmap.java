@@ -123,6 +123,8 @@ class MyHashMap3 implements MyHashMap {
             node = node.next;
         }
         tables[hash] = new Node(key, value, null, tables[hash]);
+        if (tables[hash].next != null)
+            tables[hash].next.prev = tables[hash];
     }
     
     /** Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key */
