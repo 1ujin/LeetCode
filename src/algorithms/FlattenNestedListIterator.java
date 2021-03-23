@@ -1,12 +1,13 @@
 package algorithms;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
 interface NestedInteger {
-    
+
     // @return true if this NestedInteger holds a single integer, rather than a nested list.
     public boolean isInteger();
 
@@ -17,6 +18,36 @@ interface NestedInteger {
     // @return the nested list that this NestedInteger holds, if it holds a nested list
     // Return null if this NestedInteger holds a single integer
     public List<NestedInteger> getList();
+}
+
+class NestedIntegerImpl implements NestedInteger {
+
+    Integer integer;
+    List<NestedInteger> list;
+
+    public NestedIntegerImpl(Integer integer) {
+        this.integer = integer;
+    }
+
+    public NestedIntegerImpl(List<NestedInteger> list) {
+        this.list = list;
+    }
+
+    @Override
+    public boolean isInteger() {
+        return integer != null;
+    }
+
+    @Override
+    public Integer getInteger() {
+        return integer;
+    }
+
+    @Override
+    public List<NestedInteger> getList() {
+        return list;
+    }
+
 }
 
 class NestedIterator implements Iterator<Integer> {
@@ -61,8 +92,13 @@ class NestedIterator implements Iterator<Integer> {
 public class FlattenNestedListIterator {
 
     public static void main(String[] args) {
-        // NestedIterator ni = new NestedIterator(nestedList);
-        // while (ni.hasNext()) v[f()] = i.next();
+        List<NestedInteger> nestedList = Arrays.asList(new NestedIntegerImpl(1),
+                new NestedIntegerImpl(Arrays.asList(new NestedIntegerImpl(4),
+                        new NestedIntegerImpl(Arrays.asList(new NestedIntegerImpl(6))))));
+        NestedIterator it = new NestedIterator(nestedList);
+        List<Integer> list = new ArrayList<>();
+        it.forEachRemaining(list::add);
+        System.out.println(list);
     }
 
 }
