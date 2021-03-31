@@ -14,13 +14,13 @@ public class ClumsyFactorial {
                 return 7;
             default:
                 switch(N % 4) {
-                case 0:
-                    return N + 1;
-                case 1:
-                case 2:
-                    return N + 2;
-                default:
-                    return N - 1;
+                    case 0:
+                        return N + 1;
+                    case 1:
+                    case 2:
+                        return N + 2;
+                    default:
+                        return N - 1;
                 }
         }
     }
