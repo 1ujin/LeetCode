@@ -4,16 +4,13 @@ public class FindMinimumInRotatedSortedArray {
 
     public int findMin(int[] nums) {
         int lo = 0, hi = nums.length - 1;
-        if (nums[0] < nums[hi])
-            return nums[0];
-        while (lo < hi - 1) {
+        while (lo < hi) {
             int mid = lo + hi >> 1;
-            if (nums[mid] > nums[lo])
-                lo = mid;
-            else
+            if (nums[mid] < nums[hi])
                 hi = mid;
+            else lo = mid + 1;
         }
-        return nums[hi];
+        return nums[lo];
     }
 
     public static void main(String[] args) {
