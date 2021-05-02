@@ -3,15 +3,14 @@ package algorithms;
 public class ReverseInteger {
     
     public static int reverse(int x) {
-        int ret = 0;
-        while (x != 0) {
-            int pop = x % 10;
-            x /= 10;
-            if (ret > Integer.MAX_VALUE / 10 || (ret == Integer.MAX_VALUE / 10 && pop > 7)) return 0;
-            if (ret < Integer.MIN_VALUE / 10 || (ret == Integer.MIN_VALUE / 10 && pop < -8)) return 0;
-            ret = ret * 10 + pop;
-        }
-        return ret;
+        int y = 0, max = Integer.MAX_VALUE / 10, min = Integer.MIN_VALUE / 10;
+        do {
+            int z = x % 10;
+            if (y == max && z > 7 || y > max || y == min && z < -8 || y < min)
+                return 0;
+            y = y * 10 + z;
+        } while ((x /= 10) != 0);
+        return y;
     }
 
     public static void main(String[] args) {
@@ -22,8 +21,9 @@ public class ReverseInteger {
         System.out.println(Integer.toBinaryString(-1));
         System.out.println(Integer.toBinaryString(Integer.MIN_VALUE));
         long startTime = System.nanoTime();
-        reverse(1234);
+        int result = reverse(1234);
         long endTime = System.nanoTime();
+        System.out.println(result);
         System.out.println("Duration: " + (endTime - startTime) + "ns");
     }
 
