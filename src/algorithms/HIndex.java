@@ -3,7 +3,7 @@ package algorithms;
 import java.util.Arrays;
 
 public class HIndex {
-    
+
     public int hIndex(int[] citations) {
         Arrays.sort(citations);
         int min = citations[0], max = citations[citations.length - 1], h = 0;
@@ -17,7 +17,7 @@ public class HIndex {
     }
 
     public static void main(String[] args) {
-        int[] citations = {3,0,6,1,5};
+        int[] citations = { 3, 0, 6, 1, 5 };
         System.out.println(new HIndex().hIndex(citations));
     }
 
