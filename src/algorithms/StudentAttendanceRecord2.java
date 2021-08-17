@@ -1,7 +1,7 @@
 package algorithms;
 
 public class StudentAttendanceRecord2 {
-    
+
     public int checkRecord(int n) {
         int[][][] dp = new int[n + 1][2][3];
         dp[0][0][0] = 1;
