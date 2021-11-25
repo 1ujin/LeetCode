@@ -19,6 +19,10 @@ public class List {
             }
         }
     }
+    
+    public List(Integer... vals) {
+        this(Arrays.stream(vals).mapToInt(Integer::intValue).toArray());
+    }
 
     public int[] getVals() {
         return vals;
