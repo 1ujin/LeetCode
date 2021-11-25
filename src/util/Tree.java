@@ -3,20 +3,28 @@ package util;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.stream.Collectors;
+//import java.util.stream.Collectors;
 
 public class Tree {
     
-    private int[] vals;
+    private Integer[] vals;
     private TreeNode root;
 //    private int nullCount = 0;
     
     public Tree(int[] vals) {
+        this.vals = new Integer[vals.length];
+        for (int i = 0; i < vals.length; i++)
+            this.vals[i] = vals[i] == Integer.MIN_VALUE ? null
+                    : Integer.valueOf(vals[i]);
+        generateByBfs(new LinkedList<>());
+    }
+    
+    public Tree(Integer... vals) {
         this.vals = vals;
         generateByBfs(new LinkedList<>());
     }
     
-    public int[] getVals() { return vals; }
+    public Integer[] getVals() { return vals; }
     
     public TreeNode getRoot() { return root; }
     
@@ -29,12 +37,12 @@ public class Tree {
             TreeNode node = queue.poll();
             if (node == null) continue;
             if (index < vals.length - 1) {
-                if (vals[++index] == Integer.MIN_VALUE) node.left = null;
+                if (vals[++index] == null) node.left = null;
                 else node.left = new TreeNode(vals[index]);
                 queue.offer(node.left);
             } else break;
             if (index < vals.length - 1) {
-                if (vals[++index] == Integer.MIN_VALUE) node.right = null;
+                if (vals[++index] == null) node.right = null;
                 else node.right = new TreeNode(vals[index]);
                 queue.offer(node.right);
             } else break;
@@ -42,7 +50,7 @@ public class Tree {
     }
     
 //    private TreeNode generateByDfs(int index) {
-//        if (index >= vals.length || vals[index] == Integer.MIN_VALUE) {
+//        if (index >= vals.length || vals[index] == null) {
 //            this.nullCount++;
 //            return null;
 //        }
@@ -54,9 +62,10 @@ public class Tree {
     
     @Override
     public String toString() {
-        return Arrays.stream(vals).boxed().collect(Collectors.toList()).stream()
-                .map(i -> i == Integer.MIN_VALUE ? null : i)
-                .collect(Collectors.toList()).toString();
+        return Arrays.toString(vals);
+//        return Arrays.stream(vals).boxed().collect(Collectors.toList()).stream()
+//                .map(i -> i == Integer.MIN_VALUE ? null : i)
+//                .collect(Collectors.toList()).toString();
     }
 
 }
