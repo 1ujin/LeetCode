@@ -18,8 +18,7 @@ public class RandomFlipMatrix {
     }
 
     public int[] flip() {
-        int x = new Random().nextInt(total);
-        total--;
+        int x = new Random().nextInt(total--);
         int idx = map.getOrDefault(x, x);
         map.put(x, map.getOrDefault(total, total));
         return new int[] { idx / n, idx % n };
