@@ -24,6 +24,10 @@ public class Tree {
         generateByBfs(new LinkedList<>());
     }
     
+    public static Tree of(Integer... vals) {
+        return new Tree(vals);
+    }
+    
     public Integer[] getVals() { return vals; }
     
     public TreeNode getRoot() { return root; }
