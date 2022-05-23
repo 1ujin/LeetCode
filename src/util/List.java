@@ -23,6 +23,10 @@ public class List {
     public List(Integer... vals) {
         this(Arrays.stream(vals).mapToInt(Integer::intValue).toArray());
     }
+    
+    public static List of(Integer... vals) {
+        return new List(vals);
+    }
 
     public int[] getVals() {
         return vals;
