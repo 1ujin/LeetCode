@@ -13,12 +13,13 @@ public class FindAndReplacePattern {
             char[] map1 = new char[26], map2 = new char[26];
             char[] wcs = word.toCharArray();
             for (int i = 0; i < len; i++) {
-                if (map1[pcs[i] - 'a'] == wcs[i] && map2[wcs[i] - 'a'] == pcs[i])
+                char a = pcs[i], b = wcs[i];
+                if (map1[a - 'a'] == b && map2[b - 'a'] == a)
                     continue;
-                else if (map1[pcs[i] - 'a'] != 0 || map2[wcs[i] - 'a'] != 0)
+                else if (map1[a - 'a'] != 0 || map2[b - 'a'] != 0)
                     continue outer;
-                map1[pcs[i] - 'a'] = wcs[i];
-                map2[wcs[i] - 'a'] = pcs[i];
+                map1[a - 'a'] = b;
+                map2[b - 'a'] = a;
             }
             list.add(word);
         }
