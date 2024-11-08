@@ -11,8 +11,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+interface Foo {
+    
+    void first(Runnable printFirst) throws InterruptedException;
+    
+    void second(Runnable printSecond) throws InterruptedException;
+    
+    void third(Runnable printThird) throws InterruptedException;
+}
+
 // method 1 count down latch 倒计时门闩
-class FooByCountDownLatch {
+class FooByCountDownLatch implements Foo {
     
     private final CountDownLatch firstLatch = new CountDownLatch(1);
     private final CountDownLatch secoundLatch = new CountDownLatch(1);
@@ -24,6 +33,7 @@ class FooByCountDownLatch {
     }
 
     public void second(Runnable printSecond) throws InterruptedException {
+        // 该线程在开始运行前等待 n 个线程执行完毕
         firstLatch.await();
         // printSecond.run() outputs "second". Do not change or remove this line.
         printSecond.run();
@@ -31,6 +41,7 @@ class FooByCountDownLatch {
     }
 
     public void third(Runnable printThird) throws InterruptedException {
+        // 该线程在开始运行前等待 n 个线程执行完毕
         secoundLatch.await();
         // printThird.run() outputs "third". Do not change or remove this line.
         printThird.run();
@@ -39,7 +50,8 @@ class FooByCountDownLatch {
 }
 
 // method 2 volatile fastest
-class FooByVolatile {
+// 可见性 + 禁止指令重排
+class FooByVolatile implements Foo {
     
     private volatile boolean second = false;
     private volatile boolean third = false;
@@ -51,14 +63,14 @@ class FooByVolatile {
     }
     
     public void second(Runnable printSecond) throws InterruptedException {
-        while (!second) {}
+        while (!second) {} // 自旋锁
         // printSecond.run() outputs "second". Do not change or remove this line.
         printSecond.run();
         third = true;
     }
     
     public void third(Runnable printThird) throws InterruptedException {
-        while (!third) {}
+        while (!third) {} // 自旋锁
         // printThird.run() outputs "third". Do not change or remove this line.
         printThird.run();
     }
@@ -66,7 +78,7 @@ class FooByVolatile {
 }
 
 // method 3 atomic
-class FooByAtomic {
+class FooByAtomic implements Foo {
     
     private volatile AtomicBoolean secondAtomicBoolean = new AtomicBoolean(false);
     private volatile AtomicBoolean thirdAtomicBoolean = new AtomicBoolean(false);
@@ -78,14 +90,14 @@ class FooByAtomic {
     }
     
     public void second(Runnable printSecond) throws InterruptedException {
-        while (!secondAtomicBoolean.get()) {}
+        while (!secondAtomicBoolean.get()) {} // 自旋锁
         // printSecond.run() outputs "second". Do not change or remove this line.
         printSecond.run();
         thirdAtomicBoolean.set(true);
     }
     
     public void third(Runnable printThird) throws InterruptedException {
-        while (!thirdAtomicBoolean.get()) {}
+        while (!thirdAtomicBoolean.get()) {} // 自旋锁
         // printThird.run() outputs "third". Do not change or remove this line.
         printThird.run();
     }
@@ -93,7 +105,7 @@ class FooByAtomic {
 }
 
 // method 4 synchronized 同步
-class FooBySynchronized {
+class FooBySynchronized implements Foo {
     
     private int lock = 0;
     
@@ -109,7 +121,7 @@ class FooBySynchronized {
     }
 
     public synchronized void second(Runnable printSecond) throws InterruptedException {
-        while (lock < 1) wait();
+        if (lock < 1) wait();
         // printSecond.run() outputs "second". Do not change or remove this line.
         printSecond.run();
         lock++;
@@ -119,7 +131,7 @@ class FooBySynchronized {
 
     public void third(Runnable printThird) throws InterruptedException {
         synchronized (this) {
-            while (lock < 2) wait();
+            while (lock < 2) wait(); // 自旋锁
             // printThird.run() outputs "third". Do not change or remove this line.
             printThird.run();
         }
@@ -128,26 +140,25 @@ class FooBySynchronized {
 }
 
 // method 5 semaphore 信号旗
-class FooBySemaphore {
+class FooBySemaphore implements Foo {
     
-    private Semaphore secondSemaphore = new Semaphore(0); // second 方法 0 个许可
-    private Semaphore thirdSemaphore = new Semaphore(0); // third 方法 0 个许可
+    private Semaphore semaphore = new Semaphore(0); // 0 个许可
     
     public void first(Runnable printFirst) throws InterruptedException {
         // printFirst.run() outputs "first". Do not change or remove this line.
         printFirst.run();
-        secondSemaphore.release(); // 给 second 方法发 1 个许可
+        semaphore.release(); // 发 1 个许可
     }
 
     public void second(Runnable printSecond) throws InterruptedException {
-        secondSemaphore.acquire(); // 消耗 1 个 second 许可才能往下执行
+        semaphore.acquire(); // 消耗 1 个许可才能往下执行
         // printSecond.run() outputs "second". Do not change or remove this line.
         printSecond.run();
-        thirdSemaphore.release(); // 给 third 方法发 1 个许可
+        semaphore.release(2); // 发 2 个许可
     }
 
     public void third(Runnable printThird) throws InterruptedException {
-        thirdSemaphore.acquire(); // 消耗 1 个 third 许可才能往下执行
+        while (!semaphore.tryAcquire(2)) {} // 尝试消耗 2 个许可才能，成功则往下执行，否则循环
         // printThird.run() outputs "third". Do not change or remove this line.
         printThird.run();
     }
@@ -155,21 +166,25 @@ class FooBySemaphore {
 }
 
 // method 6 lock 重入锁
-class FooByLock {
+class FooByLock implements Foo {
     
     private int flag = 0;
     private ReentrantLock lock = new ReentrantLock();
     private Condition condition = lock.newCondition();
 
     public void first(Runnable printFirst) throws InterruptedException {
+        // 如果锁被另一个线程持有，则当前线程出于线程调度目的而被禁用，并处于休眠状态，直到获取锁
+        // 本质是 acquire
         lock.lock();
         try {
             // printFirst.run() outputs "first". Do not change or remove this line.
             printFirst.run();
             flag++;
-            // 调用 signal() 会随机通知，此处如果通知到 t3 线程会死锁，所以全部通知
+            // 将所有线程从该条件的等待队列移至拥有锁的等待队列
+            // 调用 signal() 会随机通知，此处如果通知到 t3 线程会死锁，因为 flag 无法变成 2，所以全部通知
             condition.signalAll();
         } finally {
+            // 本质是 release
             lock.unlock();
         }
     }
@@ -177,12 +192,14 @@ class FooByLock {
     public void second(Runnable printSecond) throws InterruptedException {
         lock.lock();
         try {
-            while (flag != 1)
+            if (flag != 1)
                 // 与此相关的锁被释放，出于线程调度目的，当前线程被禁用并休眠直到被通知
+                // 本质是 release 被通知后重新 acquire
                 condition.await();
             // printSecond.run() outputs "second". Do not change or remove this line.
             printSecond.run();
             flag++;
+            // 将等待时间最长的线程（如果存在）从该条件的等待队列移至拥有锁的等待队列
             // 只剩 t3 线程需要通知，不用全部通知
             condition.signal();
         } finally {
@@ -193,7 +210,7 @@ class FooByLock {
     public void third(Runnable printThird) throws InterruptedException {
         lock.lock();
         try {
-            while (flag != 2)
+            while (flag != 2) // 自旋锁
                 condition.await();
             // printThird.run() outputs "third". Do not change or remove this line.
             printThird.run();
@@ -204,7 +221,7 @@ class FooByLock {
 }
 
 // method 7 blocking queue 阻塞队列
-class FooByBlockingQueue {
+class FooByBlockingQueue implements Foo {
     
     // 类似 Semaphore
     private BlockingQueue<Integer> secondQueue = new ArrayBlockingQueue<>(1);
@@ -234,9 +251,9 @@ public class PrintInOrder {
 
     public static void main(String[] args) {
         ExecutorService exec = Executors.newCachedThreadPool();
-        FooByLock foo = new FooByLock();
+        Foo foo = new FooByLock();
         // 三种不同的方式建立线程，推荐实现Runnable接口
-        Runnable t1 = new Runnable() {
+        Thread t1 = new Thread(new Runnable() {
             public void run() {
                 try {
                     TimeUnit.MILLISECONDS.sleep(2000);
@@ -249,7 +266,7 @@ public class PrintInOrder {
                     e.printStackTrace();
                 }
             }
-        };
+        });
         Runnable t2 = () -> {
             try {
                 TimeUnit.MILLISECONDS.sleep(1000);
